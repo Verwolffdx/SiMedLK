@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SiMedLK</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_schedule">Расписание</string>
+    <string name="menu_calendar">Календарь</string>
+    <string name="menu_events">События</string>
+    <string name="menu_colleagues">Коллеги</string>
+    <string name="menu_notification">Уведомления</string>
+    <string name="menu_salary">Зарплата</string>
+    <string name="menu_settings">Настройки</string>
+</resources>
