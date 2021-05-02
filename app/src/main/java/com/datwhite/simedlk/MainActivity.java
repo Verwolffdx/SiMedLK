@@ -17,6 +17,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -50,15 +54,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
         arguments = getIntent().getExtras();
-        Doctor doctor;
-
         if (arguments != null) {
-            doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
+            Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
 
+            //Обработка нажатия на хэдер меню (профиль)
             View headerView = navigationView.getHeaderView(0);
-
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -66,9 +67,11 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("doctor", doctor);
                     bundle.putSerializable("medorg", medOrg);
+                    //Переход на страницу с профилем
                     navController.navigate(R.id.nav_profile, bundle);
                     drawer.close();
 
+                    //Анимации
 //                    navController.navigate(
 //                            R.id.EditProfileFragment,
 //                            null,
@@ -86,13 +89,16 @@ public class MainActivity extends AppCompatActivity {
             TextView docName = (TextView) headerView.findViewById(R.id.doctorName);
             TextView docSpec = (TextView) headerView.findViewById(R.id.doctorSpec);
 
+            HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("specialization");
+
             docName.setText(doctor.getName());
-            if (doctor.getSpecialization().length() > 0)
-                docSpec.setText(doctor.getSpecialization());
+            if (specializations.size() > 0)
+                docSpec.setText(specializations.get(doctor.getDOCT_IDs().get(0).toString()));
 
         }
     }
 
+    ////Обработка нажатия на кнопкку настроек (правый верхний угол)
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
@@ -101,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
 
+    //Обработка нажатия на кнопкку меню (левый верхний угол)
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
