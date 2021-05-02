@@ -39,45 +39,104 @@ public class ProfileFragment extends Fragment {
             docSpec.setText(doctor.getSpecialization());
 
         LinearLayout layout = root.findViewById(R.id.profile_layout);
-        //**
 
+        //Описание
         //setContentView(R.layout.activity_main);
-        LinearLayout linearLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
+        LinearLayout descrLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
         // горизонтальная ориентация
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-//        linearLayout.setGravity(Gravity.TOP);
+        descrLayout.setOrientation(LinearLayout.VERTICAL);
+//        descrLayout.setGravity(Gravity.TOP);
         // создаем параметры позиционирования для элемента
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
         // устанавливаем отступы
         layoutParams.setMargins(0, 16, 0, 16);
-        linearLayout.setPadding(20, 20, 20, 20);
+        descrLayout.setPadding(20, 20, 20, 20);
 //        layoutParams.setMargins(R.dimen.activity_horizontal_margin, R.dimen.activity_vertical_margin, R.dimen.activity_horizontal_margin, R.dimen.activity_vertical_margin);
-        linearLayout.setLayoutParams(layoutParams);
+        descrLayout.setLayoutParams(layoutParams);
         //textView.setLayoutParams(layoutParams);
-
         // добавляем элемент в LinearLayout
         TextView descr = new TextView(getContext());
         descr.setText("Описание");
         descr.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
         descr.setTextSize(18);
 //        descr.setLayoutParams(layoutParams);
-        linearLayout.addView(descr);
+        descrLayout.addView(descr);
         // добавляем элемент в LinearLayout
         TextView descrText = new TextView(getContext());
         descrText.setText("Текст описания");
         descrText.setTextSize(18);
         descrText.setPadding(20, 0, 0, 0);
 //        descr.setLayoutParams(layoutParams);
-        linearLayout.addView(descrText);
+        descrLayout.addView(descrText);
 
-        //**
+        layout.addView(descrLayout);
 
-        layout.addView(linearLayout);
+        //Квалификация
+        //setContentView(R.layout.activity_main);
+        LinearLayout qualifLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
+        // горизонтальная ориентация
+        qualifLayout.setOrientation(LinearLayout.VERTICAL);
+//        descrLayout.setGravity(Gravity.TOP);
+        // создаем параметры позиционирования для элемента
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+//                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        // устанавливаем отступы
+        layoutParams.setMargins(0, 16, 0, 16);
+        qualifLayout.setPadding(20, 20, 20, 20);
+//        layoutParams.setMargins(R.dimen.activity_horizontal_margin, R.dimen.activity_vertical_margin, R.dimen.activity_horizontal_margin, R.dimen.activity_vertical_margin);
+        qualifLayout.setLayoutParams(layoutParams);
+        //textView.setLayoutParams(layoutParams);
+        // добавляем элемент в LinearLayout
+        TextView qualif = new TextView(getContext());
+        qualif.setText("Квалификация");
+        qualif.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+        qualif.setTextSize(18);
+//        qualif.setLayoutParams(layoutParams);
+        qualifLayout.addView(qualif);
+        // добавляем элемент в LinearLayout
+        TextView qualifText = new TextView(getContext());
+        qualifText.setText("Текст квалификации");
+        qualifText.setTextSize(18);
+        qualifText.setPadding(20, 0, 0, 0);
+//        qualif.setLayoutParams(layoutParams);
+        qualifLayout.addView(qualifText);
 
-//        getActivity().addContentView(linearLayout, layoutParams);
+        layout.addView(qualifLayout);
+
+        //Оказываемые услуги
+        //setContentView(R.layout.activity_main);
+        LinearLayout servicesLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
+        // горизонтальная ориентация
+        servicesLayout.setOrientation(LinearLayout.VERTICAL);
+//        descrLayout.setGravity(Gravity.TOP);
+        // создаем параметры позиционирования для элемента
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+//                (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        // устанавливаем отступы
+        layoutParams.setMargins(0, 16, 0, 16);
+        servicesLayout.setPadding(20, 20, 20, 20);
+//        layoutParams.setMargins(R.dimen.activity_horizontal_margin, R.dimen.activity_vertical_margin, R.dimen.activity_horizontal_margin, R.dimen.activity_vertical_margin);
+        servicesLayout.setLayoutParams(layoutParams);
+        //textView.setLayoutParams(layoutParams);
+        // добавляем элемент в LinearLayout
+        TextView services = new TextView(getContext());
+        services.setText("Оказываемые услуги");
+        services.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
+        services.setTextSize(18);
+//        services.setLayoutParams(layoutParams);
+        servicesLayout.addView(services);
+        // добавляем элемент в LinearLayout
+        TextView servicesText = new TextView(getContext());
+        servicesText.setText("Услуги");
+        servicesText.setTextSize(18);
+        servicesText.setPadding(20, 0, 0, 0);
+//        services.setLayoutParams(layoutParams);
+        servicesLayout.addView(servicesText);
+
+        layout.addView(servicesLayout);
+
+//        getActivity().addContentView(descrLayout, layoutParams);
 
 
 //        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
