@@ -1,20 +1,15 @@
 package com.datwhite.simedlk;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
-import com.datwhite.simedlk.ui.profile.ProfileActivity;
+import com.datwhite.simedlk.ui.profile.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.core.view.MenuItemCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -58,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         arguments = getIntent().getExtras();
         Doctor doctor;
+
         if (arguments != null) {
             doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
 
@@ -66,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Use the Kotlin extension in the -ktx artifacts
-
-
-                    // Now use the generated Directions class to navigate to the destination
-                    navController.navigate(R.id.nav_profile);
+                    MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("doctor", doctor);
+                    bundle.putSerializable("medorg", medOrg);
+                    navController.navigate(R.id.nav_profile, bundle);
                     drawer.close();
 
 //                    navController.navigate(

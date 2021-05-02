@@ -119,10 +119,6 @@ public class AuthActivity extends AppCompatActivity {
                     medorglist[i] = list.get(i).getName();
                 }
 
-                for (String i : medorglist) {
-                    System.out.println(i);
-                }
-
                 myConnection.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -250,10 +246,6 @@ public class AuthActivity extends AppCompatActivity {
                 doctors = new String[list.size()];
                 for (int i = 0; i < list.size(); i++) {
                     doctors[i] = list.get(i).getName();
-                }
-
-                for (String i : doctors) {
-                    System.out.println(i);
                 }
 
                 myConnection.disconnect();
