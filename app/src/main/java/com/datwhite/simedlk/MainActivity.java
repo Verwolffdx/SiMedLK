@@ -64,9 +64,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
+                    HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("specialization");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("doctor", doctor);
                     bundle.putSerializable("medorg", medOrg);
+                    bundle.putSerializable("specialization", specializations);
                     //Переход на страницу с профилем
                     navController.navigate(R.id.nav_profile, bundle);
                     drawer.close();
@@ -87,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
             });
 
             TextView docName = (TextView) headerView.findViewById(R.id.doctorName);
-            TextView docSpec = (TextView) headerView.findViewById(R.id.doctorSpec);
+//            TextView docSpec = (TextView) headerView.findViewById(R.id.doctorSpec);
 
-            HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("specialization");
+//            HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("specialization");
 
             docName.setText(doctor.getName());
-            if (specializations.size() > 0)
-                docSpec.setText(specializations.get(doctor.getDOCT_IDs().get(0).toString()));
+//            if (specializations.size() > 0)
+//                docSpec.setText(specializations.get(doctor.getDOCT_IDs().get(0).toString()));
 
         }
     }
