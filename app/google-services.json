@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1018774858163",
+    "project_id": "simedlk-9ff4a",
+    "storage_bucket": "simedlk-9ff4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018774858163:android:a78ae8de39d9019e6f03c6",
+        "android_client_info": {
+          "package_name": "com.datwhite.simedlk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018774858163-7gb8sp4430p2r9o5nuhdvcir1giuhqo0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxUOaMLKLa3aPrkFz_oqxqvtOprEVFgBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018774858163-7gb8sp4430p2r9o5nuhdvcir1giuhqo0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -28,6 +28,11 @@
         android:name="com.datwhite.simedlk.ui.profile.ProfileFragment"
         android:label="Профиль"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/nav_colleagues"
+        android:name="com.datwhite.simedlk.ui.colleagues.ColleaguesFragment"
+        android:label="Коллеги"
+        tools:layout="@layout/fragment_colleagues" />
 
     <action android:id="@+id/EditProfileFragment"
         app:destination="@id/nav_profile"

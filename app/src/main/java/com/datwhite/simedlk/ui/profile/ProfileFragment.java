@@ -129,6 +129,9 @@ public class ProfileFragment extends Fragment {
         }
 
         //Специальности
+        for (Integer i : doctor.getDOCT_IDs())
+            System.out.println(i);
+        /*
         if (doctor.getDOCT_IDs().size() > 0) {
             LinearLayout specsLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
             // горизонтальная ориентация
@@ -159,7 +162,7 @@ public class ProfileFragment extends Fragment {
 
             layout.addView(specsLayout);
         }
-
+*/
 //        scrollView.addView(layout);
 
 

@@ -1,6 +1,7 @@
 package com.datwhite.simedlk;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,42 +27,193 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static android.util.JsonToken.END_ARRAY;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class AuthActivity extends AppCompatActivity {
+    CompositeDisposable disposable = new CompositeDisposable();
+
     private Button btn_auth;
     private MedOrg medorg;
     private Doctor doctor;
+    //    private List<Doctor> colleagues = new ArrayList<>();
     private HashMap<String, String> specs = new HashMap<>();
+
+    ArrayList<MedOrg> medOrgArrayList = new ArrayList<>();
+    ArrayList<Doctor> doctorArrayList = new ArrayList<>();
+    private App app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        app = (App) getApplication();
+
+
+
+        disposable.add(app.getSiMedService().getApi().listMedOrgs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BiConsumer<List<MedOrg>, Throwable>() {
+                    @Override
+                    public void accept(List<MedOrg> medOrgList, Throwable throwable) throws Exception {
+                        if (throwable != null) {
+                            Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
+                        } else {
+                            medOrgArrayList = (ArrayList<MedOrg>) medOrgList;
+
+                            String[] medorgArr = new String[medOrgList.size()];
+                            for (int i = 0; i < medOrgList.size(); i++) {
+//                                System.out.println("Org " + m.getTitle());
+                                medorgArr[i] = medOrgList.get(i).getTitle();
+                            }
+
+                            //Создание выпадающего списка мед организаций
+                            Spinner spinner = (Spinner) findViewById(R.id.spinnerMedorg);
+                            // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(AuthActivity.this, android.R.layout.simple_spinner_item, medorgArr);
+                            // Определяем разметку для использования при выборе элемента
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            // Применяем адаптер к элементу spinner
+                            spinner.setAdapter(adapter);
+
+                            //Обработка выбора мед организации из списка
+                            AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    // Получаем выбранный объект
+                                    String item = (String) parent.getItemAtPosition(position);
+                                    for (MedOrg medOrg : medOrgList) {
+                                        if (item.equals(medOrg.getTitle())) {
+                                            medorg = medOrg;
+                                            getDoctors();
+                                            //Запуск потока с запросом списка мед органазаций
+//                                            Doctors doctors = new Doctors();
+//                                            doctors.execute();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                }
+                            };
+                            spinner.setOnItemSelectedListener(itemSelectedListener);
+
+//                            adapter.setDates(dates);
+                        }
+                    }
+                }));
+
+
+
+
         //Кнопка авторизации
         btn_auth = findViewById(R.id.btn_auth);
         btn_auth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-                intent.putExtra(Doctor.class.getSimpleName(), doctor);
-                intent.putExtra(MedOrg.class.getSimpleName(), medorg);
-                intent.putExtra("specialization", specs);
-                startActivity(intent);
+//                Intent intent = new Intent(AuthActivity.this, MainActivity.class);
+//                intent.putExtra(Doctor.class.getSimpleName(), doctor);
+//                intent.putExtra(MedOrg.class.getSimpleName(), medorg);
+//                intent.putExtra("specialization", specs);
+//                startActivity(intent);
+//                onPause();
+                System.out.println(doctor.toString());
+                MainActivity.start(v.getContext(),doctor, doctorArrayList);
                 onPause();
             }
         });
 
         //Запуск потока с запросом списка мед органазаций
-        Medorglist myTask = new Medorglist();
-        myTask.execute();
+//        Medorglist myTask = new Medorglist();
+//        myTask.execute();
     }
 
+    @Override
+    protected void onDestroy() {
+        disposable.dispose();
+        super.onDestroy();
+    }
+
+    public void getDoctors() {
+        app.getSiMedService().getApi().listDoctors(medorg.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BiConsumer<List<Doctor>, Throwable>() {
+                    @Override
+                    public void accept(List<Doctor> doctorList, Throwable throwable) throws Exception {
+                        if (throwable != null) {
+                            Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
+                        } else {
+                            doctorArrayList = (ArrayList<Doctor>) doctorList;
+
+                            String[] doctorsArr = new String[doctorList.size()];
+                            for (int i = 0; i < doctorList.size(); i++) {
+//                                System.out.println("Org " + m.getTitle());
+                                doctorsArr[i] = doctorList.get(i).getName();
+                            }
+
+                            //Создание выпадающего списка врачей
+                            TextView textView = (TextView) findViewById(R.id.text);
+                            Spinner spinner = (Spinner) findViewById(R.id.spinnerFio);
+                            // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(AuthActivity.this, android.R.layout.simple_spinner_item, doctorsArr);
+                            // Определяем разметку для использования при выборе элемента
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            // Применяем адаптер к элементу spinner
+                            spinner.setAdapter(adapter);
+
+                            //Обработка выбора мед организации из списка
+                            AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    // Получаем выбранный объект
+                                    String item = (String) parent.getItemAtPosition(position);
+                                    for (Doctor doc : doctorList) {
+                                        if (item.equals(doc.getName())) {
+                                            doctor = doc;
+                                            //Запуск потока с запросом списка мед органазаций
+//                                            Doctors doctors = new Doctors();
+//                                            doctors.execute();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                }
+                            };
+                            spinner.setOnItemSelectedListener(itemSelectedListener);
+
+//                            adapter.setDates(dates);
+                        }
+                    }
+                });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
     //Чтение JSON файла со списком мед органазаций
     public List<MedOrg> readJsonStreamMedOrgs(InputStream in) throws IOException {
         JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
@@ -127,7 +280,7 @@ public class AuthActivity extends AppCompatActivity {
                 list = readJsonStreamMedOrgs(responseBody);
                 medorglist = new String[list.size()];
                 for (int i = 0; i < list.size(); i++) {
-                    medorglist[i] = list.get(i).getName();
+                    medorglist[i] = list.get(i).getTitle();
                 }
 
                 myConnection.disconnect();
@@ -159,7 +312,7 @@ public class AuthActivity extends AppCompatActivity {
                     // Получаем выбранный объект
                     String item = (String)parent.getItemAtPosition(position);
                     for (MedOrg medOrg : list) {
-                        if (item.equals(medOrg.getName())) {
+                        if (item.equals(medOrg.getTitle())) {
                             medorg = medOrg;
                             //Запуск потока с запросом списка мед органазаций
                             Doctors doctors = new Doctors();
@@ -261,9 +414,11 @@ public class AuthActivity extends AppCompatActivity {
                 InputStream responseBody = myConnection.getInputStream();
 
                 list = readJsonStreamDoct(responseBody);
+
                 doctors = new String[list.size()];
                 for (int i = 0; i < list.size(); i++) {
                     doctors[i] = list.get(i).getName();
+//                    colleagues.add(list.get(i));
                 }
 
                 myConnection.disconnect();
@@ -402,3 +557,4 @@ public class AuthActivity extends AppCompatActivity {
 //        }
     }
 }
+*/

@@ -1,6 +1,9 @@
 package com.datwhite.simedlk;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,7 +12,10 @@ import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.ui.profile.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.navigation.NavArgument;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavType;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -17,13 +23,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String EXTRA_DATA = "SecondActivity.EXTRA_DATA";
 
     private AppBarConfiguration mAppBarConfiguration;
     private Bundle arguments;
+
+    public static void start(Context caller, Doctor doctor, ArrayList<Doctor> colleagues) {
+        Intent intent = new Intent(caller, MainActivity.class);
+        intent.putExtra(Doctor.class.getSimpleName(), (Parcelable) doctor);
+        intent.putParcelableArrayListExtra("COLLEAGUES", colleagues);
+        caller.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +73,25 @@ public class MainActivity extends AppCompatActivity {
         arguments = getIntent().getExtras();
         if (arguments != null) {
             Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
+            MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
+
+            List<Doctor> colleagues = new ArrayList<>();
+//            System.out.println(arguments.getParcelableArray("colleagues"));
+
+//            NavDestination orderDestination = navController.getGraph().findNode(R.id.nav_colleagues);
+//            orderDestination.addArgument("medOrgId", new NavArgument.Builder()
+//                    .setType(NavType.StringType)
+//                    .setDefaultValue(arguments.getSerializable(medOrg.getId()))
+//                    .build());
+
+
 
             //Обработка нажатия на хэдер меню (профиль)
             View headerView = navigationView.getHeaderView(0);
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
+
                     HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("specialization");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("doctor", doctor);

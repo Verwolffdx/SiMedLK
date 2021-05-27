@@ -1,9 +1,12 @@
 package com.datwhite.simedlk.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.List;
 
-public class Doctor implements Serializable {
+public class Doctor implements Serializable, Parcelable {
     private String id;
     private String name;
     private String photo;
@@ -41,6 +44,44 @@ public class Doctor implements Serializable {
         this.services = services;
         this.DOCT_IDs = DOCT_IDs;
     }
+
+    protected Doctor(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        photo = in.readString();
+        desc = in.readString();
+        specialization = in.readString();
+        qualification = in.readString();
+        services = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(photo);
+        dest.writeString(desc);
+        dest.writeString(specialization);
+        dest.writeString(qualification);
+        dest.writeString(services);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Doctor> CREATOR = new Creator<Doctor>() {
+        @Override
+        public Doctor createFromParcel(Parcel in) {
+            return new Doctor(in);
+        }
+
+        @Override
+        public Doctor[] newArray(int size) {
+            return new Doctor[size];
+        }
+    };
 
     public String getId() {
         return id;
