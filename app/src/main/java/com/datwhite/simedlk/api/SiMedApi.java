@@ -2,6 +2,7 @@ package com.datwhite.simedlk.api;
 
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
+import com.datwhite.simedlk.entity.Specialization;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface SiMedApi {
 
     @GET("api/Web/medicinfo/{MEDORG_ID}/1")
     Single<List<Doctor>> listDoctors(@Path("MEDORG_ID") String medorg_id);
+
+    @GET("api/Web/allspec/{MEDORG_ID}")
+    Single<List<Specialization>> listSpecs(@Path("MEDORG_ID") String medorg_id);
 }

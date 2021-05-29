@@ -32,7 +32,8 @@ public class ProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         Doctor doctor = (Doctor) getArguments().getSerializable("doctor");
-        System.out.println("DOCTOR " + doctor.getName());
+//        System.out.println("DOCTOR " + doctor.getName());
+        System.out.println("PROFILE DOCTid " + doctor.getDOCT_IDs());
 
         TextView docName = root.findViewById(R.id.doctorName);
 //        TextView docSpec = root.findViewById(R.id.doctorSpec);
@@ -50,8 +51,6 @@ public class ProfileFragment extends Fragment {
                         (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         //Описание
-        System.out.println(doctor.getDesc() != "");
-        System.out.println(doctor.getDesc());
         if (!doctor.getDesc().equals("") && !doctor.getDesc().equals("-1")) {
             LinearLayout descrLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
             // горизонтальная ориентация
@@ -78,7 +77,7 @@ public class ProfileFragment extends Fragment {
         }
 
         //Квалификация
-        if (doctor.getQualification() != "") {
+        if (!doctor.getQualification().equals("")) {
             LinearLayout qualifLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
             // горизонтальная ориентация
             qualifLayout.setOrientation(LinearLayout.VERTICAL);
@@ -103,7 +102,7 @@ public class ProfileFragment extends Fragment {
         }
 
         //Оказываемые услуги
-        if (doctor.getServices() != "") {
+        if (!doctor.getServices().equals("")) {
             LinearLayout servicesLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
             // горизонтальная ориентация
             servicesLayout.setOrientation(LinearLayout.VERTICAL);
@@ -129,9 +128,9 @@ public class ProfileFragment extends Fragment {
         }
 
         //Специальности
-        for (Integer i : doctor.getDOCT_IDs())
-            System.out.println(i);
-        /*
+//        for (Integer i : doctor.getDOCT_IDs())
+//            System.out.println(i);
+
         if (doctor.getDOCT_IDs().size() > 0) {
             LinearLayout specsLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
             // горизонтальная ориентация
@@ -162,7 +161,7 @@ public class ProfileFragment extends Fragment {
 
             layout.addView(specsLayout);
         }
-*/
+
 //        scrollView.addView(layout);
 
 

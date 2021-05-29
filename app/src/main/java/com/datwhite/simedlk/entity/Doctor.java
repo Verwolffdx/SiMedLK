@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Doctor implements Serializable, Parcelable {
@@ -24,15 +25,6 @@ public class Doctor implements Serializable, Parcelable {
         this.name = name;
     }
 
-    public Doctor(String id, String name, String photo, String desc, String specialization, String qualification, String services) {
-        this.id = id;
-        this.name = name;
-        this.photo = photo;
-        this.desc = desc;
-        this.specialization = specialization;
-        this.qualification = qualification;
-        this.services = services;
-    }
 
     public Doctor(String id, String name, String photo, String desc, String specialization, String qualification, String services, List<Integer> DOCT_IDs) {
         this.id = id;
@@ -53,6 +45,8 @@ public class Doctor implements Serializable, Parcelable {
         specialization = in.readString();
         qualification = in.readString();
         services = in.readString();
+        DOCT_IDs = new ArrayList<Integer>();
+        in.readList(DOCT_IDs, Doctor.class.getClassLoader());
     }
 
     @Override
@@ -64,6 +58,7 @@ public class Doctor implements Serializable, Parcelable {
         dest.writeString(specialization);
         dest.writeString(qualification);
         dest.writeString(services);
+        dest.writeList(DOCT_IDs);
     }
 
     @Override
@@ -149,15 +144,6 @@ public class Doctor implements Serializable, Parcelable {
 
     @Override
     public String toString() {
-        return "Doctor{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", photo='" + photo + '\'' +
-                ", desc='" + desc + '\'' +
-                ", specialization='" + specialization + '\'' +
-                ", qualification='" + qualification + '\'' +
-                ", services='" + services + '\'' +
-                ", DOCT_IDs=" + DOCT_IDs +
-                '}';
+        return name;
     }
 }

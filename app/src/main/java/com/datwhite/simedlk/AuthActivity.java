@@ -1,18 +1,23 @@
 package com.datwhite.simedlk;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.datwhite.simedlk.entity.Doctor;
@@ -22,11 +27,15 @@ import com.datwhite.simedlk.entity.Specialization;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -39,6 +48,9 @@ public class AuthActivity extends AppCompatActivity {
     CompositeDisposable disposable = new CompositeDisposable();
 
     private Button btn_auth;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
+
     private MedOrg medorg;
     private Doctor doctor;
     //    private List<Doctor> colleagues = new ArrayList<>();
@@ -46,6 +58,7 @@ public class AuthActivity extends AppCompatActivity {
 
     ArrayList<MedOrg> medOrgArrayList = new ArrayList<>();
     ArrayList<Doctor> doctorArrayList = new ArrayList<>();
+    //    ArrayList<Specialization> specializationArrayList = new ArrayList<>();
     private App app;
 
     @Override
@@ -54,9 +67,11 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
 
         app = (App) getApplication();
+        progressBar = findViewById(R.id.progressBar);
+        linearLayout = findViewById(R.id.linear_layout);
 
-
-
+        linearLayout.setAlpha(0.8F);
+        progressBar.setVisibility(ProgressBar.VISIBLE);
         disposable.add(app.getSiMedService().getApi().listMedOrgs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -65,6 +80,8 @@ public class AuthActivity extends AppCompatActivity {
                     public void accept(List<MedOrg> medOrgList, Throwable throwable) throws Exception {
                         if (throwable != null) {
                             Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
+                            linearLayout.setAlpha(1);
                         } else {
                             medOrgArrayList = (ArrayList<MedOrg>) medOrgList;
 
@@ -92,7 +109,11 @@ public class AuthActivity extends AppCompatActivity {
                                     for (MedOrg medOrg : medOrgList) {
                                         if (item.equals(medOrg.getTitle())) {
                                             medorg = medOrg;
+                                            app.setMedOrg(medOrg);
                                             getDoctors();
+                                            getSpecs();
+//                                            progressBar.setVisibility(ProgressBar.INVISIBLE);
+//                                            linearLayout.setAlpha(1);
                                             //Запуск потока с запросом списка мед органазаций
 //                                            Doctors doctors = new Doctors();
 //                                            doctors.execute();
@@ -112,8 +133,6 @@ public class AuthActivity extends AppCompatActivity {
                 }));
 
 
-
-
         //Кнопка авторизации
         btn_auth = findViewById(R.id.btn_auth);
         btn_auth.setOnClickListener(new View.OnClickListener() {
@@ -125,8 +144,8 @@ public class AuthActivity extends AppCompatActivity {
 //                intent.putExtra("specialization", specs);
 //                startActivity(intent);
 //                onPause();
-                System.out.println(doctor.toString());
-                MainActivity.start(v.getContext(),doctor, doctorArrayList);
+//                System.out.println("AUTH DOCTid " + doctor.toString());
+                MainActivity.start(v.getContext(), doctor, medorg.getId(), specs);
                 onPause();
             }
         });
@@ -142,6 +161,7 @@ public class AuthActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @SuppressLint("CheckResult")
     public void getDoctors() {
         app.getSiMedService().getApi().listDoctors(medorg.getId())
                 .subscribeOn(Schedulers.io())
@@ -153,7 +173,7 @@ public class AuthActivity extends AppCompatActivity {
                             Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
                         } else {
                             doctorArrayList = (ArrayList<Doctor>) doctorList;
-
+                            app.setDoctorList(doctorList);
                             String[] doctorsArr = new String[doctorList.size()];
                             for (int i = 0; i < doctorList.size(); i++) {
 //                                System.out.println("Org " + m.getTitle());
@@ -170,6 +190,8 @@ public class AuthActivity extends AppCompatActivity {
                             // Применяем адаптер к элементу spinner
                             spinner.setAdapter(adapter);
 
+
+
                             //Обработка выбора мед организации из списка
                             AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
                                 @Override
@@ -179,6 +201,9 @@ public class AuthActivity extends AppCompatActivity {
                                     for (Doctor doc : doctorList) {
                                         if (item.equals(doc.getName())) {
                                             doctor = doc;
+                                            app.setDoctor(doc);
+                                            progressBar.setVisibility(ProgressBar.INVISIBLE);
+                                            linearLayout.setAlpha(1);
                                             //Запуск потока с запросом списка мед органазаций
 //                                            Doctors doctors = new Doctors();
 //                                            doctors.execute();
@@ -196,6 +221,37 @@ public class AuthActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @SuppressLint("CheckResult")
+    public void getSpecs() {
+        app.getSiMedService().getApi().listSpecs(medorg.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BiConsumer<List<Specialization>, Throwable>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void accept(List<Specialization> specializationList, Throwable throwable) throws Exception {
+                        if (throwable != null) {
+                            Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
+                        } else {
+//                            specializationArrayList = (ArrayList<Specialization>) specializationList;
+                            app.setSpecializations(convertListAfterJava8(specializationList));
+
+                            for (Specialization s : specializationList) {
+                                specs.put(s.getId(), s.getName());
+//                                System.out.println(s.getName());
+                            }
+                        }
+                    }
+                });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, String> convertListAfterJava8(List<Specialization> list) {
+        Map<String, String> map = list.stream()
+                .collect(Collectors.toMap(Specialization::getId, Specialization::getName));
+        return map;
     }
 }
 

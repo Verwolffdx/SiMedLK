@@ -1,6 +1,9 @@
 package com.datwhite.simedlk.entity;
 
-public class Specialization {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Specialization implements Parcelable {
     private String id;
     private String name;
 
@@ -23,5 +26,15 @@ public class Specialization {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }
