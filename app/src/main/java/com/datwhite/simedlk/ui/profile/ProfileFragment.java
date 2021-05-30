@@ -1,6 +1,8 @@
 package com.datwhite.simedlk.ui.profile;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,19 +19,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.datwhite.simedlk.App;
+import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileFragment extends Fragment {
+    private View root;
+    private App app;
+
+    public static void start(Context caller, Doctor doctor) {
+        Intent intent = new Intent(caller, MainActivity.class);
+        caller.startActivity(intent);
+    }
 
     @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        root = inflater.inflate(R.layout.fragment_profile, container, false);
+        app = (App) getActivity().getApplication();
 
         Doctor doctor = (Doctor) getArguments().getSerializable("doctor");
 //        System.out.println("DOCTOR " + doctor.getName());
@@ -49,6 +63,12 @@ public class ProfileFragment extends Fragment {
         // создаем параметры позиционирования для элемента
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                         (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        if (getArguments().getString("PROFILE_TYPE").equals("COLLEAGUE")) {
+            Button chatBtn = new Button(getContext());
+            chatBtn.setText("Перейти в чат");
+            layout.addView(chatBtn);
+        }
 
         //Описание
         if (!doctor.getDesc().equals("") && !doctor.getDesc().equals("-1")) {
@@ -147,7 +167,8 @@ public class ProfileFragment extends Fragment {
             specs.setTextSize(18);
             specsLayout.addView(specs);
             // добавляем элемент в LinearLayout
-            HashMap<String, String> specializations = (HashMap<String, String>) getArguments().getSerializable("specialization");
+//            HashMap<String, String> specializations = (HashMap<String, String>) getArguments().getSerializable("specialization");
+            Map<String, String> specializations = app.getSpecializations();
             for (int i : doctor.getDOCT_IDs()) {
                 System.out.println(specializations.get(Integer.toString(i)));
                 if (specializations.get(Integer.toString(i)) == null)
@@ -165,7 +186,10 @@ public class ProfileFragment extends Fragment {
 //        scrollView.addView(layout);
 
 
+
         return root;
     }
+
+
 
 }

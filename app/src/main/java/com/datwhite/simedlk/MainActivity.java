@@ -33,9 +33,11 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String EXTRA_DATA = "SecondActivity.EXTRA_DATA";
+    private final static String TAG_FRAGMENT = "TAG_FRAGMENT";
 
     private AppBarConfiguration mAppBarConfiguration;
     private Bundle arguments;
+    private NavController navController;
 
     public static void start(Context caller, Doctor doctor, String medOrgId, HashMap<String, String> specializations) {
         Intent intent = new Intent(caller, MainActivity.class);
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_schedule, R.id.nav_calendar, R.id.nav_events, R.id.nav_colleagues)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putSerializable("doctor", doctor);
                     bundle.putSerializable("medorg", medOrg);
                     bundle.putSerializable("specialization", specializations);
+                    bundle.putString("PROFILE_TYPE", "DOCTOR");
                     //Переход на страницу с профилем
                     navController.navigate(R.id.nav_profile, bundle);
                     drawer.close();
@@ -135,5 +138,20 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    public NavController getNavController() {
+        return navController;
     }
 }
