@@ -27,6 +27,9 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.SiMedLK.NoActionBar">
         </activity>
+        <activity
+            android:name=".ui.chat.ChatFragment">
+        </activity>
 
 
     </application>

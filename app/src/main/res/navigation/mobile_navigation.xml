@@ -33,6 +33,11 @@
         android:name="com.datwhite.simedlk.ui.colleagues.ColleaguesFragment"
         android:label="Коллеги"
         tools:layout="@layout/fragment_colleagues" />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_chat"-->
+<!--        android:name="com.datwhite.simedlk.ui.chat.ChatFragment"-->
+<!--        android:label="Чат"-->
+<!--        tools:layout="@layout/fragment_chat" />-->
 
     <action android:id="@+id/EditProfileFragment"
         app:destination="@id/nav_profile"
@@ -46,5 +51,11 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+<!--    <action android:id="@+id/goChat"-->
+<!--        app:destination="@id/nav_chat"-->
+<!--        app:enterAnim="@anim/nav_default_enter_anim"-->
+<!--        app:exitAnim="@anim/nav_default_exit_anim"-->
+<!--        app:popEnterAnim="@anim/nav_default_pop_enter_anim"-->
+<!--        app:popExitAnim="@anim/nav_default_pop_exit_anim"/>-->
 
 </navigation>

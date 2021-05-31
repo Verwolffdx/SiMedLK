@@ -23,6 +23,7 @@ import com.datwhite.simedlk.App;
 import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
+import com.datwhite.simedlk.ui.chat.ChatFragment;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -68,6 +69,18 @@ public class ProfileFragment extends Fragment {
             Button chatBtn = new Button(getContext());
             chatBtn.setText("Перейти в чат");
             layout.addView(chatBtn);
+
+            chatBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    MainActivity mainActivity = (MainActivity) getActivity();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelable("doctor", doctor);
+//                    mainActivity.getNavController().navigate(R.id.chat, bundle);
+                    ChatFragment.start(v.getContext(), doctor);
+                    onPause();
+                }
+            });
         }
 
         //Описание
@@ -151,7 +164,7 @@ public class ProfileFragment extends Fragment {
 //        for (Integer i : doctor.getDOCT_IDs())
 //            System.out.println(i);
 
-        if (doctor.getDOCT_IDs().size() > 0) {
+        if (doctor.getDOCT_IDs().size() > 0 && app.getSpecializations().size() > 0) {
             LinearLayout specsLayout = new LinearLayout(getContext(), null, 0, R.style.profile_item);
             // горизонтальная ориентация
             specsLayout.setOrientation(LinearLayout.VERTICAL);
