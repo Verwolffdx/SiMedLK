@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_colleagues_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20px"
+    android:padding="10px"
+    style="@style/profile_item">
+
+    <TextView
+        android:id="@+id/schedule_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15:45"
+        android:textSize="28dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:paddingRight="20px"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"/>
+    <TextView
+        android:id="@+id/schedule_worker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Терапевт"
+        android:textSize="24dp"
+        android:textColor="@color/black"
+        android:paddingRight="20px"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/schedule_time"
+        />
+    <TextView
+        android:id="@+id/schedule_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30 мин"
+        android:textSize="24dp"
+        android:textColor="@color/black"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+
+</RelativeLayout>

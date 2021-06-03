@@ -1,7 +1,12 @@
 package com.datwhite.simedlk.ui.chat;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +62,15 @@ public class ChatFragment extends AppCompatActivity {
         caller.startActivity(intent);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_chat);
+        setTitle("Чат");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
 
         app = (App) getApplication();
         arguments = getIntent().getExtras();
@@ -162,6 +172,15 @@ public class ChatFragment extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+//        if (getFragmentManager().getBackStackEntryCount() > 0 ){
+//            getFragmentManager().popBackStack();
+//        }
+        return true;
     }
 /*
     public View onCreateView(@NonNull LayoutInflater inflater,

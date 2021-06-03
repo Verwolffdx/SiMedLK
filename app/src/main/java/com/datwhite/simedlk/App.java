@@ -5,6 +5,7 @@ import android.app.Application;
 import com.datwhite.simedlk.api.SiMedService;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
+import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ public class App extends Application {
     private MedOrg medOrg;
     private List<Doctor> doctorList;
     private Map<String, String> specializations;
+    private WorkerCellsResponse workerCellsResponse;
 
     @Override
     public void onCreate() {
@@ -59,5 +61,13 @@ public class App extends Application {
 
     public void setSpecializations(Map<String, String> specializations) {
         this.specializations = specializations;
+    }
+
+    public WorkerCellsResponse getWorkerCellsResponse() {
+        return workerCellsResponse;
+    }
+
+    public void setWorkerCellsResponse(WorkerCellsResponse workerCellsResponse) {
+        this.workerCellsResponse = workerCellsResponse;
     }
 }

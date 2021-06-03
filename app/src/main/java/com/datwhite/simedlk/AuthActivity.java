@@ -23,6 +23,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.Specialization;
+import com.datwhite.simedlk.entity.schedule.Cell;
+import com.datwhite.simedlk.entity.schedule.Schedule;
+import com.datwhite.simedlk.entity.schedule.Worker;
+import com.datwhite.simedlk.entity.schedule.WorkerCellsBody;
+import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +35,8 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +65,7 @@ public class AuthActivity extends AppCompatActivity {
 
     ArrayList<MedOrg> medOrgArrayList = new ArrayList<>();
     ArrayList<Doctor> doctorArrayList = new ArrayList<>();
+
     //    ArrayList<Specialization> specializationArrayList = new ArrayList<>();
     private App app;
 
@@ -102,6 +110,7 @@ public class AuthActivity extends AppCompatActivity {
 
                             //Обработка выбора мед организации из списка
                             AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.O)
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     // Получаем выбранный объект
@@ -111,7 +120,8 @@ public class AuthActivity extends AppCompatActivity {
                                             medorg = medOrg;
                                             app.setMedOrg(medOrg);
                                             getDoctors();
-                                            getSpecs();
+
+
 //                                            progressBar.setVisibility(ProgressBar.INVISIBLE);
 //                                            linearLayout.setAlpha(1);
                                             //Запуск потока с запросом списка мед органазаций
@@ -145,6 +155,7 @@ public class AuthActivity extends AppCompatActivity {
 //                startActivity(intent);
 //                onPause();
 //                System.out.println("AUTH DOCTid " + doctor.toString());
+                doctorArrayList.remove(doctor);
                 MainActivity.start(v.getContext(), doctor, medorg.getId(), specs);
                 onPause();
             }
@@ -174,6 +185,7 @@ public class AuthActivity extends AppCompatActivity {
                         } else {
                             doctorArrayList = (ArrayList<Doctor>) doctorList;
                             app.setDoctorList(doctorList);
+
                             String[] doctorsArr = new String[doctorList.size()];
                             for (int i = 0; i < doctorList.size(); i++) {
 //                                System.out.println("Org " + m.getTitle());
@@ -204,6 +216,8 @@ public class AuthActivity extends AppCompatActivity {
                                             app.setDoctor(doc);
                                             progressBar.setVisibility(ProgressBar.INVISIBLE);
                                             linearLayout.setAlpha(1);
+
+                                            getSpecs();
                                             //Запуск потока с запросом списка мед органазаций
 //                                            Doctors doctors = new Doctors();
 //                                            doctors.execute();
@@ -242,9 +256,79 @@ public class AuthActivity extends AppCompatActivity {
                                 specs.put(s.getId(), s.getName());
 //                                System.out.println(s.getName());
                             }
+                            getSchedule();
                         }
                     }
                 });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void getSchedule() {
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDateTime now = LocalDateTime.now();
+        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+        WorkerCellsBody workerCellsBody = new WorkerCellsBody(
+                Integer.parseInt(medorg.getId()),
+                1,
+                Integer.parseInt(doctor.getId()),
+                doctor.getDOCT_IDs().get(0),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()),
+                0
+        );
+        disposable.add(app.getSiMedService().getApi().getWorkerCells(workerCellsBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BiConsumer<WorkerCellsResponse, Throwable>() {
+                    @Override
+                    public void accept(WorkerCellsResponse workerCellsResponse, Throwable throwable) throws Exception {
+                        if (throwable != null) {
+                            Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
+                            System.out.println(throwable.getCause());
+                        } else {
+                            app.setWorkerCellsResponse(workerCellsResponse);
+                            /*
+                            System.out.println("RESPONSE");
+                            System.out.println("$id " + workerCellsResponse.get$id());
+                            System.out.println("message " + workerCellsResponse.getMessage());
+                            System.out.println("success " + workerCellsResponse.getSuccess());
+                            System.out.println("\tWORKER");
+                            for (Worker w : workerCellsResponse.getWorkers()) {
+                                System.out.println("\t$id " + w.get$id());
+                                System.out.println("\twork_id " + w.getWork_id());
+                                System.out.println("\twork_surname " + w.getWork_surname());
+                                System.out.println("\twork_name " + w.getWork_name());
+                                System.out.println("\twork_patronimic " + w.getWork_patronimic());
+                                System.out.println("\treception_duration " + w.getReception_duration());
+                                System.out.println("\t\tSCHEDULE");
+                                for (Schedule s : w.getSchedule()) {
+                                    System.out.println("\t\t$id " + s.get$id());
+                                    System.out.println("\t\tworker_id " + s.getWorker_id());
+                                    System.out.println("\t\tsched_id " + s.getSched_id());
+                                    System.out.println("\t\tmedorg_id " + s.getMedorg_id());
+                                    System.out.println("\t\tbranch_id " + s.getBranch_id());
+                                    System.out.println("\t\tdoctor_id " + s.getDoctor_id());
+                                    System.out.println("\t\t\tCELLS");
+                                    for (Cell c : s.getCells()) {
+                                        System.out.println("\t\t\t$id " + c.get$id());
+                                        System.out.println("\t\t\tfree " + c.isFree());
+                                        System.out.println("\t\t\troom " + c.getRoom());
+                                        System.out.println("\t\t\tdate " + c.getDate());
+                                        System.out.println("\t\t\ttime_start " + c.getTime_start());
+                                        System.out.println("\t\t\ttime_end " + c.getTime_end());
+                                    }
+                                }
+
+                            }
+
+                             */
+
+
+
+//                            adapter.setDates(dates);
+                        }
+                    }
+                }));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

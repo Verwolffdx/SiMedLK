@@ -66,8 +66,13 @@ public class ProfileFragment extends Fragment {
                         (LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         if (getArguments().getString("PROFILE_TYPE").equals("COLLEAGUE")) {
-            Button chatBtn = new Button(getContext());
+            Button chatBtn = new Button(getContext(), null, 0, R.style.auth_button);
             chatBtn.setText("Перейти в чат");
+            chatBtn.setTextSize(18);
+            chatBtn.setGravity(Gravity.CENTER);
+            layoutParams.setMargins(0, 16, 0, 16);
+            chatBtn.setLayoutParams(layoutParams);
+            chatBtn.setPadding(20, 20, 20, 20);
             layout.addView(chatBtn);
 
             chatBtn.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +180,7 @@ public class ProfileFragment extends Fragment {
 
             // добавляем элемент в LinearLayout
             TextView specs = new TextView(getContext());
-            specs.setText("Спецальность");
+            specs.setText("Специальность");
             specs.setTextAppearance(R.style.TextAppearance_AppCompat_Body1);
             specs.setTextSize(18);
             specsLayout.addView(specs);
