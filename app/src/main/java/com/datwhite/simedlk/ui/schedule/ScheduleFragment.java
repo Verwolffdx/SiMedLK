@@ -1,12 +1,16 @@
 package com.datwhite.simedlk.ui.schedule;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +58,18 @@ public class ScheduleFragment extends Fragment {
         if (workerCellsResponse.getWorkers().size() > 0) {
             ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells());
             recyclerView.setAdapter(adapter);
+        } else {
+            CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
+            TextView textView = new TextView(getContext());
+            textView.setLayoutParams(new CoordinatorLayout.LayoutParams
+                    (CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+//            textView.setWidth(CoordinatorLayout.LayoutParams.MATCH_PARENT);
+//            textView.setHeight(CoordinatorLayout.LayoutParams.WRAP_CONTENT);
+            textView.setText("Сегодня записей нет");
+            textView.setTextSize(24);
+            textView.setGravity(Gravity.CENTER);
+            textView.setPadding(24, 24, 24, 24);
+            schedule_main.addView(textView);
         }
 
 

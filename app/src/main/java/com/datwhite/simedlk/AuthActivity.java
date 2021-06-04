@@ -155,7 +155,7 @@ public class AuthActivity extends AppCompatActivity {
 //                startActivity(intent);
 //                onPause();
 //                System.out.println("AUTH DOCTid " + doctor.toString());
-                doctorArrayList.remove(doctor);
+
                 MainActivity.start(v.getContext(), doctor, medorg.getId(), specs);
                 onPause();
             }
@@ -243,6 +243,7 @@ public class AuthActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BiConsumer<List<Specialization>, Throwable>() {
+                    @SuppressLint("NewApi")
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void accept(List<Specialization> specializationList, Throwable throwable) throws Exception {
