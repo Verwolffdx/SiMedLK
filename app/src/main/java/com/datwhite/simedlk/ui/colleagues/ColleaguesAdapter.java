@@ -1,8 +1,12 @@
 package com.datwhite.simedlk.ui.colleagues;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +45,12 @@ public class ColleaguesAdapter extends RecyclerView.Adapter<ColleaguesAdapter.Vi
     public void onBindViewHolder(@NonNull ColleaguesAdapter.ViewHolder holder, int position) {
         Doctor doctor = doctorList.get(position);
         holder.docName.setText(doctor.getName());
+        //Фото
+        if (!doctor.getPhoto().equals("-1") && !doctor.getPhoto().equals("")) {
+            byte[] decodedByte = Base64.decode(doctor.getPhoto(), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+            holder.colleague_profile_photo.setImageBitmap(bitmap);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,11 +68,13 @@ public class ColleaguesAdapter extends RecyclerView.Adapter<ColleaguesAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 //        final ImageView docPhoto;
         final TextView docName;
+        final ImageView colleague_profile_photo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 //            docPhoto = (ImageView) itemView.findViewById(R.id.colleaguesImageView);
             docName = (TextView) itemView.findViewById(R.id.colleaguesName);
+            colleague_profile_photo = (ImageView) itemView.findViewById(R.id.colleague_profile_photo);
         }
     }
 }

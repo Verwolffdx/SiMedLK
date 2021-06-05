@@ -1,11 +1,16 @@
 package com.datwhite.simedlk;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.util.ULocale;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Base64;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.datwhite.simedlk.entity.Doctor;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private Bundle arguments;
     private NavController navController;
+    private App app;
 
     public static void start(Context caller, Doctor doctor, String medOrgId, HashMap<String, String> specializations) {
         Intent intent = new Intent(caller, MainActivity.class);
@@ -53,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        app = (App) getApplication();
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +85,11 @@ public class MainActivity extends AppCompatActivity {
 
         arguments = getIntent().getExtras();
         if (arguments != null) {
-            Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
+//            Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
+            Doctor doctor = app.getDoctor();
             MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
+
+
 
             //Обработка нажатия на хэдер меню (профиль)
             View headerView = navigationView.getHeaderView(0);
@@ -119,6 +129,14 @@ public class MainActivity extends AppCompatActivity {
             docName.setText(doctor.getName());
 //            if (specializations.size() > 0)
 //                docSpec.setText(specializations.get(doctor.getDOCT_IDs().get(0).toString()));
+
+            //Фото
+            if (!doctor.getPhoto().equals("-1") && !doctor.getPhoto().equals("")) {
+                ImageView profile_photo = (ImageView) headerView.findViewById(R.id.menu_profile_photo);
+                byte[] decodedByte = Base64.decode(doctor.getPhoto(), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+                profile_photo.setImageBitmap(bitmap);
+            }
 
         }
     }
