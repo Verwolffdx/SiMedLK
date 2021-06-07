@@ -1,12 +1,11 @@
 package com.datwhite.simedlk;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,28 +22,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.Specialization;
-import com.datwhite.simedlk.entity.schedule.Cell;
-import com.datwhite.simedlk.entity.schedule.Schedule;
-import com.datwhite.simedlk.entity.schedule.Worker;
 import com.datwhite.simedlk.entity.schedule.WorkerCellsBody;
 import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -73,6 +60,16 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel("fcm_default_channel",
+                    "Weather", NotificationManager.IMPORTANCE_LOW));
+
+//            Intent intentFCM = new Intent(this, MyFirebaseMessagingService.class);
+//            startService(intentFCM);
+        }
 
         app = (App) getApplication();
         progressBar = findViewById(R.id.progressBar);
@@ -203,7 +200,6 @@ public class AuthActivity extends AppCompatActivity {
                             spinner.setAdapter(adapter);
 
 
-
                             //Обработка выбора мед организации из списка
                             AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
                                 @Override
@@ -267,7 +263,7 @@ public class AuthActivity extends AppCompatActivity {
     public void getSchedule() {
 //        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //        LocalDateTime now = LocalDateTime.now();
-        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
+//        System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()));
         WorkerCellsBody workerCellsBody = new WorkerCellsBody(
                 Integer.parseInt(medorg.getId()),
                 1,
@@ -323,7 +319,6 @@ public class AuthActivity extends AppCompatActivity {
                             }
 
                              */
-
 
 
 //                            adapter.setDates(dates);

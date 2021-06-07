@@ -52,7 +52,7 @@ public class ColleaguesFragment extends Fragment {
             return;
         }
 
-        System.out.println("RESUME!!!!");
+//        System.out.println("RESUME!!!!");
         doctorList = new ArrayList<>(app.getDoctorList());
         doctorList.remove(app.getDoctor());
         ColleaguesAdapter adapter = new ColleaguesAdapter(createAdapter(), inf, doctorList);

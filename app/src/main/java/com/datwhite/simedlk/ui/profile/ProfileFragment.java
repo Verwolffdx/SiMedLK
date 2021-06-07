@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
 
         Doctor doctor = (Doctor) getArguments().getSerializable("doctor");
 //        System.out.println("DOCTOR " + doctor.getName());
-        System.out.println("PROFILE DOCTid " + doctor.getDOCT_IDs());
+//        System.out.println("PROFILE DOCTid " + doctor.getDOCT_IDs());
 
         TextView docName = root.findViewById(R.id.doctorName);
 //        TextView docSpec = root.findViewById(R.id.doctorSpec);
@@ -200,7 +200,7 @@ public class ProfileFragment extends Fragment {
 //            HashMap<String, String> specializations = (HashMap<String, String>) getArguments().getSerializable("specialization");
             Map<String, String> specializations = app.getSpecializations();
             for (int i : doctor.getDOCT_IDs()) {
-                System.out.println(specializations.get(Integer.toString(i)));
+//                System.out.println(specializations.get(Integer.toString(i)));
                 if (specializations.get(Integer.toString(i)) == null)
                     continue;
                 TextView specsText = new TextView(getContext());
