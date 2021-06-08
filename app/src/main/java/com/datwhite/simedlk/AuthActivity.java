@@ -1,9 +1,6 @@
 package com.datwhite.simedlk;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -61,15 +58,10 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(new NotificationChannel("fcm_default_channel",
-                    "Weather", NotificationManager.IMPORTANCE_LOW));
 
-//            Intent intentFCM = new Intent(this, MyFirebaseMessagingService.class);
-//            startService(intentFCM);
-        }
+
+
+
 
         app = (App) getApplication();
         progressBar = findViewById(R.id.progressBar);

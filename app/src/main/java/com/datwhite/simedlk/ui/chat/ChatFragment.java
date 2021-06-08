@@ -91,6 +91,7 @@ public class ChatFragment extends AppCompatActivity {
 
         mMessageRecycler.setAdapter(dataAdapter);
 
+        
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
