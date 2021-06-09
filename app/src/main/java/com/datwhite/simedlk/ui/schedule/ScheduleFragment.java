@@ -13,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datwhite.simedlk.App;
+import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.schedule.Cell;
@@ -26,6 +28,9 @@ import com.datwhite.simedlk.ui.colleagues.ColleaguesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScheduleFragment extends Fragment {
 
     private ScheduleViewModel scheduleViewModel;
@@ -34,7 +39,13 @@ public class ScheduleFragment extends Fragment {
     private WorkerCellsResponse workerCellsResponse;
     private RecyclerView recyclerView;
 
+    private MainActivity mainActivity;
+
+    private NavController navController;
+
     private LayoutInflater inf;
+
+    private List<Cell> scheduleList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,18 +56,32 @@ public class ScheduleFragment extends Fragment {
         inf = inflater;
         recyclerView = root.findViewById(R.id.recycler_schedule);
 //        final TextView textView = root.findViewById(R.id.text_home);
+
+        navController = (NavController) app.getNavController();
+
         FloatingActionButton fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                navController.navigate(R.id.nav_add_patient);
             }
         });
+
+
         workerCellsResponse = app.getWorkerCellsResponse();
 
+
         if (workerCellsResponse.getWorkers().size() > 0) {
-            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells());
+            scheduleList = app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells();
+            List<Cell> schedule = new ArrayList<>();
+            for (Cell c : scheduleList) {
+                if (!c.isFree())
+                    schedule.add(c);
+            }
+            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, schedule);
             recyclerView.setAdapter(adapter);
         } else {
             CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);

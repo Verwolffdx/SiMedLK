@@ -2,6 +2,8 @@ package com.datwhite.simedlk;
 
 import android.app.Application;
 
+import androidx.navigation.NavController;
+
 import com.datwhite.simedlk.api.SiMedService;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
@@ -19,6 +21,8 @@ public class App extends Application {
     private List<Doctor> doctorList;
     private Map<String, String> specializations;
     private WorkerCellsResponse workerCellsResponse;
+
+    private NavController navController;
 
     @Override
     public void onCreate() {
@@ -69,5 +73,13 @@ public class App extends Application {
 
     public void setWorkerCellsResponse(WorkerCellsResponse workerCellsResponse) {
         this.workerCellsResponse = workerCellsResponse;
+    }
+
+    public NavController getNavController() {
+        return navController;
+    }
+
+    public void setNavController(NavController navController) {
+        this.navController = navController;
     }
 }

@@ -17,7 +17,9 @@ import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.Specialization;
 import com.datwhite.simedlk.ui.profile.ProfileFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.navigation.NavArgument;
 import androidx.navigation.NavController;
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        app.setNavController(navController);
+
         arguments = getIntent().getExtras();
         if (arguments != null) {
 //            Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putSerializable("specialization", specializations);
                     bundle.putString("PROFILE_TYPE", "DOCTOR");
                     //Переход на страницу с профилем
+
                     navController.navigate(R.id.nav_profile, bundle);
                     drawer.close();
 

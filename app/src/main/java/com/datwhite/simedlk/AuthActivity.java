@@ -262,7 +262,7 @@ public class AuthActivity extends AppCompatActivity {
                 Integer.parseInt(doctor.getId()),
                 doctor.getDOCT_IDs().get(0),
                 DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now()),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now().plusDays(7)),
                 0
         );
         disposable.add(app.getSiMedService().getApi().getWorkerCells(workerCellsBody)
@@ -275,6 +275,8 @@ public class AuthActivity extends AppCompatActivity {
                             Toast.makeText(AuthActivity.this, "Data loading error", Toast.LENGTH_SHORT).show();
                             System.out.println(throwable.getCause());
                         } else {
+                            if( workerCellsResponse.getWorkers().size()>0)
+                                System.out.println("---!!!----SIZE----!!!----" + workerCellsResponse.getWorkers().get(0).getSchedule().size());
                             app.setWorkerCellsResponse(workerCellsResponse);
                             /*
                             System.out.println("RESPONSE");
