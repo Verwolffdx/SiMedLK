@@ -43,7 +43,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ViewHolder holder, int position) {
         Cell cell = scheduleList.get(position);
-        holder.schedule_time.setText(cell.getTime_start());
+        holder.schedule_time_start.setText(cell.getTime_start());
+        holder.schedule_time_end.setText(cell.getTime_end());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,16 +62,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //        final ImageView docPhoto;
-        final TextView schedule_time;
-        final TextView schedule_worker;
-        final TextView schedule_duration;
+        final TextView schedule_time_start;
+        final TextView schedule_time_end;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 //            docPhoto = (ImageView) itemView.findViewById(R.id.colleaguesImageView);
-            schedule_time = (TextView) itemView.findViewById(R.id.schedule_time);
-            schedule_worker = (TextView) itemView.findViewById(R.id.schedule_worker);
-            schedule_duration = (TextView) itemView.findViewById(R.id.schedule_duration);
+            schedule_time_start = (TextView) itemView.findViewById(R.id.schedule_time_start);
+            schedule_time_end = (TextView) itemView.findViewById(R.id.schedule_time_end);
+
         }
     }
 }

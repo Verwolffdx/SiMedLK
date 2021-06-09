@@ -23,6 +23,8 @@ import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.ui.profile.ProfileFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -32,6 +34,7 @@ public class ColleaguesFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private String MED_ORG_ID;
+    private List<Doctor> doctorList;
 
     CompositeDisposable disposable = new CompositeDisposable();
     private App app;
@@ -49,9 +52,10 @@ public class ColleaguesFragment extends Fragment {
             return;
         }
 
-        System.out.println("RESUME!!!!");
-
-        ColleaguesAdapter adapter = new ColleaguesAdapter(createAdapter(), inf, app.getDoctorList());
+//        System.out.println("RESUME!!!!");
+        doctorList = new ArrayList<>(app.getDoctorList());
+        doctorList.remove(app.getDoctor());
+        ColleaguesAdapter adapter = new ColleaguesAdapter(createAdapter(), inf, doctorList);
         recyclerView.setAdapter(adapter);
 
 //        getView().setFocusableInTouchMode(true);
