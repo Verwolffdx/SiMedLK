@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top|center"
@@ -20,45 +19,43 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Медорганизация"
+            android:text="Телефон"
             android:textColor="#2196F3" />
 
-        <Spinner
-            android:id="@+id/spinnerMedorg"
+        <EditText
+            android:id="@+id/authDocPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="80px"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="9036663334"/>
+
 
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ФИО"
+            android:text="Пароль"
+            android:inputType="phone"
             android:textColor="#2196F3" />
 
-        <Spinner
-            android:id="@+id/spinnerFio"
+        <EditText
+            android:id="@+id/authDocPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="150px"
+            android:inputType="textPassword"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="12345678"/>
 
         <Button
-            android:id="@+id/btn_auth"
+            android:id="@+id/btn_doc_auth"
             style="@style/auth_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Далее" />
+            android:text="Войти" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="invisible"
-        android:indeterminateTint="#659FFF"/>
 </FrameLayout>

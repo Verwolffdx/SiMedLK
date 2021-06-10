@@ -1,6 +1,7 @@
 package com.datwhite.simedlk;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -145,7 +146,10 @@ public class AuthActivity extends AppCompatActivity {
 //                onPause();
 //                System.out.println("AUTH DOCTid " + doctor.toString());
 
-                MainActivity.start(v.getContext(), doctor, medorg.getId(), specs);
+//                AuthDoctorActivity.start(v.getContext(), doctor, medorg.getId(), specs);
+                Intent intent = new Intent(v.getContext(), AuthDoctorActivity.class);
+                startActivity(intent);
+
                 onPause();
             }
         });

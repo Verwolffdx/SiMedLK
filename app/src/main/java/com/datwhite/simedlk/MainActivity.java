@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
         if (arguments != null) {
 //            Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
             Doctor doctor = app.getDoctor();
-            MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
+            MedOrg medOrg = app.getMedOrg();
+//            MedOrg medOrg = (MedOrg) arguments.getSerializable(MedOrg.class.getSimpleName());
 
 
 

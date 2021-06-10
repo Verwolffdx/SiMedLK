@@ -3,6 +3,8 @@ package com.datwhite.simedlk.api;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.Specialization;
+import com.datwhite.simedlk.entity.auth.AuthBody;
+import com.datwhite.simedlk.entity.auth.AuthResponse;
 import com.datwhite.simedlk.entity.schedule.WorkerCellsBody;
 import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 
@@ -26,4 +28,7 @@ public interface SiMedApi {
 
     @POST("api/Web/WorkerCells/")
     Single<WorkerCellsResponse> getWorkerCells(@Body WorkerCellsBody workerCellsBody);
+
+    @POST("api/pa/Authorization/")
+    Single<AuthResponse> authorization(@Body AuthBody authBody);
 }

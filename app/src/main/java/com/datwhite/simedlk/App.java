@@ -7,6 +7,7 @@ import androidx.navigation.NavController;
 import com.datwhite.simedlk.api.SiMedService;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
+import com.datwhite.simedlk.entity.auth.AuthResponse;
 import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 
 import java.util.HashMap;
@@ -21,6 +22,7 @@ public class App extends Application {
     private List<Doctor> doctorList;
     private Map<String, String> specializations;
     private WorkerCellsResponse workerCellsResponse;
+    private AuthResponse authResponse;
 
     private NavController navController;
 
@@ -81,5 +83,13 @@ public class App extends Application {
 
     public void setNavController(NavController navController) {
         this.navController = navController;
+    }
+
+    public AuthResponse getAuthResponse() {
+        return authResponse;
+    }
+
+    public void setAuthResponse(AuthResponse authResponse) {
+        this.authResponse = authResponse;
     }
 }
