@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         app.setNavController(navController);
 
         arguments = getIntent().getExtras();
-        if (arguments != null) {
+        if (app.getDoctor().getName() != null) {
 //            Doctor doctor = (Doctor) arguments.getSerializable(Doctor.class.getSimpleName());
             Doctor doctor = app.getDoctor();
             MedOrg medOrg = app.getMedOrg();
@@ -101,11 +101,11 @@ public class MainActivity extends AppCompatActivity {
             headerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("SPECIALIZATIONS");
+//                    HashMap<String, String> specializations = (HashMap<String, String>) arguments.getSerializable("SPECIALIZATIONS");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("doctor", doctor);
-                    bundle.putSerializable("medorg", medOrg);
-                    bundle.putSerializable("specialization", specializations);
+//                    bundle.putSerializable("medorg", medOrg);s
+//                    bundle.putSerializable("specialization", specializations);
                     bundle.putString("PROFILE_TYPE", "DOCTOR");
                     //Переход на страницу с профилем
 

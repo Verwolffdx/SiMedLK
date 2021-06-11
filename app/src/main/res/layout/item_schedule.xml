@@ -8,18 +8,9 @@
     android:layout_margin="20px"
     android:padding="10px"
     style="@style/profile_item"
-    android:orientation="horizontal"
-    android:gravity="center">
+    android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="с"
-        android:textSize="28dp"
 
-        android:textColor="@color/black"
-        android:padding="20px"
-        />
     <TextView
         android:id="@+id/schedule_time_start"
         android:layout_width="wrap_content"
@@ -27,23 +18,27 @@
         android:text="15:45"
         android:textSize="28dp"
 
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:layout_weight="1"/>
     <TextView
+        android:id="@+id/schedule_doc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="до"
+        android:text="Терпавет"
         android:textSize="28dp"
 
         android:textColor="@color/black"
-        android:padding="20px" />
+        android:padding="20px"
+        android:layout_weight="4"/>
     <TextView
-        android:id="@+id/schedule_time_end"
+        android:id="@+id/schedule_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="15:45"
+        android:text="20 мин"
         android:textSize="28dp"
-
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:layout_weight="4"
+        android:gravity="end" />
 
 
 </LinearLayout>

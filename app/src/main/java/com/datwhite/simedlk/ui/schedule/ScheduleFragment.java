@@ -20,6 +20,7 @@ import com.datwhite.simedlk.App;
 import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
+import com.datwhite.simedlk.entity.auth.WorkerData;
 import com.datwhite.simedlk.entity.schedule.Cell;
 import com.datwhite.simedlk.entity.schedule.Schedule;
 import com.datwhite.simedlk.entity.schedule.Worker;
@@ -81,7 +82,7 @@ public class ScheduleFragment extends Fragment {
                 if (!c.isFree())
                     schedule.add(c);
             }
-            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, schedule);
+            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, app.getAuthResponse().getWorkerData());
             recyclerView.setAdapter(adapter);
         } else {
             CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
@@ -153,8 +154,8 @@ public class ScheduleFragment extends Fragment {
     private ScheduleAdapter.OnScheduleClickListener createAdapter() {
         ScheduleAdapter.OnScheduleClickListener colleagueClickListener = new ScheduleAdapter.OnScheduleClickListener() {
             @Override
-            public void onScheduleClick(Cell cell, int position) {
-                Toast.makeText(getContext(), "Был выбран коллега " + cell.getDate(),
+            public void onScheduleClick(WorkerData workerData, int position) {
+                Toast.makeText(getContext(), "Была выбрана запись " + workerData.get$id(),
                         Toast.LENGTH_SHORT).show();
 
 //                Bundle bundle = new Bundle();

@@ -1,7 +1,9 @@
 package com.datwhite.simedlk;
 
 import android.app.Application;
+import android.content.Context;
 
+import androidx.multidex.MultiDex;
 import androidx.navigation.NavController;
 
 import com.datwhite.simedlk.api.SiMedService;
@@ -29,8 +31,15 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
 
         siMedService = new SiMedService();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public SiMedService getSiMedService() {

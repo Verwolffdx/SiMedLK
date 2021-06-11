@@ -51,6 +51,7 @@ public class ProfileFragment extends Fragment {
         app = (App) getActivity().getApplication();
 
         Doctor doctor = (Doctor) getArguments().getSerializable("doctor");
+//        Doctor doctor = app.getDoctor();
 //        System.out.println("DOCTOR " + doctor.getName());
 //        System.out.println("PROFILE DOCTid " + doctor.getDOCT_IDs());
 

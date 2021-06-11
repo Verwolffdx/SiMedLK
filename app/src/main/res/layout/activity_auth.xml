@@ -15,7 +15,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="650px" />
+            android:layout_height="250dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:id="@+id/spinnerFio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="150px"
+            android:layout_marginBottom="50dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,7 +51,8 @@
             style="@style/auth_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Далее" />
+            android:text="Далее"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <ProgressBar

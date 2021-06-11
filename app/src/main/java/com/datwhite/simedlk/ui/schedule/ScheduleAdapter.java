@@ -9,28 +9,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datwhite.simedlk.R;
-import com.datwhite.simedlk.entity.Doctor;
-import com.datwhite.simedlk.entity.schedule.Cell;
-import com.datwhite.simedlk.entity.schedule.Schedule;
-import com.datwhite.simedlk.ui.colleagues.ColleaguesAdapter;
+import com.datwhite.simedlk.entity.auth.WorkerData;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
     interface OnScheduleClickListener{
-        void onScheduleClick(Cell cell, int position);
+        void onScheduleClick(WorkerData workerData, int position);
     }
 
     private final OnScheduleClickListener onClickListener;
 
-
     private final LayoutInflater inflater;
-    private final List<Cell> scheduleList;
+    private final List<WorkerData> workerDataList;
 
-    public ScheduleAdapter(OnScheduleClickListener onClickListener, LayoutInflater inflater, List<Cell> scheduleList) {
+    public ScheduleAdapter(OnScheduleClickListener onClickListener, LayoutInflater inflater, List<WorkerData> workerDataList) {
         this.onClickListener = onClickListener;
         this.inflater = inflater;
-        this.scheduleList = scheduleList;
+        this.workerDataList = workerDataList;
     }
 
     @NonNull
@@ -42,35 +39,41 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ScheduleAdapter.ViewHolder holder, int position) {
-        Cell cell = scheduleList.get(position);
-        holder.schedule_time_start.setText(cell.getTime_start());
-        holder.schedule_time_end.setText(cell.getTime_end());
+        WorkerData workerData = workerDataList.get(position);
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String s = formatter.parse(workerData.getREC_TIME());
+        String startTime = workerData.getREC_TIME().split("T|:")[1] + ":" + workerData.getREC_TIME().split("T|:")[2];
+        holder.schedule_time_start.setText(startTime);
+        holder.schedule_doc.setText(workerData.getDOCT_NAME());
+        holder.schedule_duration.setText(workerData.getREC_DURATION() + " мин");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickListener.onScheduleClick(cell, position);
+                onClickListener.onScheduleClick(workerData, position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return scheduleList.size();
+        return workerDataList.size();
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //        final ImageView docPhoto;
         final TextView schedule_time_start;
-        final TextView schedule_time_end;
+        final TextView schedule_doc;
+        final TextView schedule_duration;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 //            docPhoto = (ImageView) itemView.findViewById(R.id.colleaguesImageView);
             schedule_time_start = (TextView) itemView.findViewById(R.id.schedule_time_start);
-            schedule_time_end = (TextView) itemView.findViewById(R.id.schedule_time_end);
+            schedule_doc = (TextView) itemView.findViewById(R.id.schedule_doc);
+            schedule_duration = (TextView) itemView.findViewById(R.id.schedule_duration);
 
         }
     }
