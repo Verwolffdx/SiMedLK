@@ -12,6 +12,6 @@
     <string name="menu_events">События</string>
     <string name="menu_colleagues">Коллеги</string>
     <string name="menu_notification">Уведомления</string>
-    <string name="menu_salary">Зарплата</string>
+    <string name="menu_salary">Активность</string>
     <string name="menu_settings">Настройки</string>
 </resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    style="@style/profile_item"
+    android:layout_margin="20px"
+    android:padding="10px">
+    <TextView
+        android:id="@+id/activity_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="11.06.2021"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="28dp"
+        android:paddingLeft="20px"/>
+    <TextView
+        android:id="@+id/count_patients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="8 пациентов"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:paddingLeft="20px"/>
+
+</LinearLayout>

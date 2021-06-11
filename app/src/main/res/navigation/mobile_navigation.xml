@@ -28,6 +28,13 @@
         android:name="com.datwhite.simedlk.ui.profile.ProfileFragment"
         android:label="Профиль"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_activity"
+        android:name="com.datwhite.simedlk.ui.activity.ActivityFragment"
+        android:label="Активность"
+        tools:layout="@layout/fragment_activity" />
+
     <fragment
         android:id="@+id/nav_colleagues"
         android:name="com.datwhite.simedlk.ui.colleagues.ColleaguesFragment"

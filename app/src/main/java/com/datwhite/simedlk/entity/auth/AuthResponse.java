@@ -3,7 +3,7 @@ package com.datwhite.simedlk.entity.auth;
 import java.util.List;
 
 public class AuthResponse {
-    private String $id;
+
     private String work_name;
     private String work_surname;
     private String work_patronimic;
@@ -17,7 +17,7 @@ public class AuthResponse {
     public AuthResponse() {
     }
 
-    public AuthResponse(String $id,
+    public AuthResponse(
                         String work_name,
                         String work_surname,
                         String work_patronimic,
@@ -27,7 +27,7 @@ public class AuthResponse {
                         String messege,
                         String status,
                         String token) {
-        this.$id = $id;
+
         this.work_name = work_name;
         this.work_surname = work_surname;
         this.work_patronimic = work_patronimic;
@@ -39,13 +39,7 @@ public class AuthResponse {
         this.token = token;
     }
 
-    public String get$id() {
-        return $id;
-    }
 
-    public void set$id(String $id) {
-        this.$id = $id;
-    }
 
     public String getWork_name() {
         return work_name;

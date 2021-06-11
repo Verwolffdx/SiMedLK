@@ -45,6 +45,7 @@ public class ColleaguesAdapter extends RecyclerView.Adapter<ColleaguesAdapter.Vi
     public void onBindViewHolder(@NonNull ColleaguesAdapter.ViewHolder holder, int position) {
         Doctor doctor = doctorList.get(position);
         holder.docName.setText(doctor.getName());
+        System.out.println("SET SCHEDULE");
         //Фото
         if (!doctor.getPhoto().equals("-1") && !doctor.getPhoto().equals("")) {
             byte[] decodedByte = Base64.decode(doctor.getPhoto(), Base64.DEFAULT);
@@ -75,6 +76,7 @@ public class ColleaguesAdapter extends RecyclerView.Adapter<ColleaguesAdapter.Vi
 //            docPhoto = (ImageView) itemView.findViewById(R.id.colleaguesImageView);
             docName = (TextView) itemView.findViewById(R.id.colleaguesName);
             colleague_profile_photo = (ImageView) itemView.findViewById(R.id.colleague_profile_photo);
+            System.out.println("FIND SCHEDULE");
         }
     }
 }

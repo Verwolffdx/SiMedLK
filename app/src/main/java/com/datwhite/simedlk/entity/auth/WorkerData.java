@@ -1,7 +1,12 @@
 package com.datwhite.simedlk.entity.auth;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class WorkerData {
-    private String $id;
+
     private String BRA_ID;
     private String REC_TIME;
     private String REC_DURATION;
@@ -11,8 +16,8 @@ public class WorkerData {
     public WorkerData() {
     }
 
-    public WorkerData(String $id, String BRA_ID, String REC_TIME, String REC_DURATION, String DOCT_NAME, String CARD_NUMBER) {
-        this.$id = $id;
+    public WorkerData(String BRA_ID, String REC_TIME, String REC_DURATION, String DOCT_NAME, String CARD_NUMBER) {
+
         this.BRA_ID = BRA_ID;
         this.REC_TIME = REC_TIME;
         this.REC_DURATION = REC_DURATION;
@@ -20,13 +25,6 @@ public class WorkerData {
         this.CARD_NUMBER = CARD_NUMBER;
     }
 
-    public String get$id() {
-        return $id;
-    }
-
-    public void set$id(String $id) {
-        this.$id = $id;
-    }
 
     public String getBRA_ID() {
         return BRA_ID;
@@ -67,4 +65,18 @@ public class WorkerData {
     public void setCARD_NUMBER(String CARD_NUMBER) {
         this.CARD_NUMBER = CARD_NUMBER;
     }
+
+    @Exclude
+    public Map toMap() {
+        HashMap result = new HashMap<>();
+        result.put("BRA_ID", BRA_ID);
+        result.put("REC_TIME", REC_TIME);
+        result.put("REC_DURATION", REC_DURATION);
+        result.put("DOCT_NAME", DOCT_NAME);
+        result.put("CARD_NUMBER", CARD_NUMBER);
+
+        return result;
+    }
+
+
 }

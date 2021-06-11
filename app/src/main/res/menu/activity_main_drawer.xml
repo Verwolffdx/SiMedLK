@@ -26,7 +26,7 @@
             android:icon="@drawable/ic_baseline_notifications_active_24"
             android:title="@string/menu_notification"/>
         <item
-            android:id="@+id/nav_salary"
+            android:id="@+id/nav_activity"
             android:icon="@drawable/ic_baseline_monetization_on_24"
             android:title="@string/menu_salary"/>
         <item

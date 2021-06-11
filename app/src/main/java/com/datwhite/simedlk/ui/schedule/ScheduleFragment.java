@@ -155,7 +155,7 @@ public class ScheduleFragment extends Fragment {
         ScheduleAdapter.OnScheduleClickListener colleagueClickListener = new ScheduleAdapter.OnScheduleClickListener() {
             @Override
             public void onScheduleClick(WorkerData workerData, int position) {
-                Toast.makeText(getContext(), "Была выбрана запись " + workerData.get$id(),
+                Toast.makeText(getContext(), "Была выбрана запись ",
                         Toast.LENGTH_SHORT).show();
 
 //                Bundle bundle = new Bundle();
