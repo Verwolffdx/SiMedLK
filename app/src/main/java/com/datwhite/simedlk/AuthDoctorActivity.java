@@ -125,26 +125,27 @@ public class AuthDoctorActivity extends AppCompatActivity {
 //                                                myRef.setValue(w);
 
 
-                                            myRef.addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                            if (authResponse.getWorkerData() != null) {
+                                                myRef.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 //                                                    Log.e("Count ", "" + snapshot.getChildrenCount());
-                                                    //если в БД записей меньше, чем приходит в ответ на автоизацию ->
-                                                    //дописать недостающие в БД
-                                                    if (snapshot.getChildrenCount() != authResponse.getWorkerData().size()) {
-                                                        for (int i = (int) (snapshot.getChildrenCount()-1); i < authResponse.getWorkerData().size(); i++) {
-                                                            myRef.setValue(authResponse.getWorkerData().get(i));
+                                                        //если в БД записей меньше, чем приходит в ответ на автоизацию ->
+                                                        //дописать недостающие в БД
+                                                        if (snapshot.getChildrenCount() != authResponse.getWorkerData().size()) {
+                                                            for (int i = (int) (snapshot.getChildrenCount() - 1); i < authResponse.getWorkerData().size(); i++) {
+                                                                myRef.setValue(authResponse.getWorkerData().get(i));
+                                                            }
                                                         }
+
                                                     }
 
-                                                }
+                                                    @Override
+                                                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-                                                @Override
-                                                public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-                                                }
-                                            });
-
+                                                    }
+                                                });
+                                            }
 
 
 //                                            if (myRef.get().equals(authResponse.getWorkerData()))

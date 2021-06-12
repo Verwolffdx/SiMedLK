@@ -75,13 +75,13 @@ public class ScheduleFragment extends Fragment {
         workerCellsResponse = app.getWorkerCellsResponse();
 
 
-        if (workerCellsResponse.getWorkers().size() > 0) {
-            scheduleList = app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells();
-            List<Cell> schedule = new ArrayList<>();
-            for (Cell c : scheduleList) {
-                if (!c.isFree())
-                    schedule.add(c);
-            }
+        if (app.getAuthResponse().getWorkerData() != null) {
+//            scheduleList = app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells();
+//            List<Cell> schedule = new ArrayList<>();
+//            for (Cell c : scheduleList) {
+//                if (!c.isFree())
+//                    schedule.add(c);
+//            }
             ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, app.getAuthResponse().getWorkerData());
             recyclerView.setAdapter(adapter);
         } else {

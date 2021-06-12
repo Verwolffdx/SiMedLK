@@ -1,22 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.calendar.CalendarFragment">
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:background="#A6C7FF">
 
-    <TextView
-        android:id="@+id/text_gallery"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="#A6C7FF">
+        <Spinner
+            android:id="@+id/month_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginRight="200dp"
+            android:layout_marginLeft="5dp"
+            android:spinnerMode="dropdown"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#A6C7FF"
+        android:foregroundGravity="fill_horizontal"
+        android:gravity="fill_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="ПН" />
+
+            <TextView
+                android:id="@+id/monday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+
+                android:gravity="center_vertical|center_horizontal"
+                android:text="71"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ВТ"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tuesday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="8"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="СР"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/wednesday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="9"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ЧТ"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/thursday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="10"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ПТ"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/friday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="11"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="СБ"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/saturday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="12"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ВС"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/sunday"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/circle_day"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="13"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <GridLayout
+                android:id="@+id/times"
+                android:layout_width="25dp"
+                android:layout_height="match_parent"
+                android:columnCount="1"
+                android:orientation="horizontal"
+                android:rowCount="12">
+            </GridLayout>
+            <GridLayout
+                android:id="@+id/day_patients"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="8"
+                android:orientation="horizontal"
+                android:rowCount="12">
+            </GridLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>
