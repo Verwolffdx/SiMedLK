@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,7 +26,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.datwhite.simedlk.App;
 import com.datwhite.simedlk.R;
+import com.datwhite.simedlk.entity.ActivityEntity;
+import com.datwhite.simedlk.entity.auth.WorkerData;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,13 +45,23 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CalendarFragment extends Fragment {
     private View root;
+    private App app;
 
     private Spinner spinner;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef;
+
+    private List<ActivityEntity> activityEntityList = new ArrayList<>();
+    private List<WorkerData> workerDataList = new ArrayList<>();
+    private List<String> patientsTime = new ArrayList<>();
 
     String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
 
@@ -60,12 +81,18 @@ public class CalendarFragment extends Fragment {
     private int swipeCount = 0;
 
     private int current_month;
+    private int current_week;
+
+    private int chosenWeek = 0;
+    private int chosenMonth = 0;
+
 
     @SuppressLint({"NewApi", "ResourceAsColor", "ClickableViewAccessibility"})
     @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_calendar, container, false);
+        app = (App) getActivity().getApplication();
 
         spinner = (Spinner) root.findViewById(R.id.month_spinner);
 
@@ -99,6 +126,9 @@ public class CalendarFragment extends Fragment {
         int ofWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
         int ofMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
+        current_week = calendar.get(Calendar.WEEK_OF_YEAR);
+        current_month = calendar.get(Calendar.MONTH) + 1;
+
         String[] weekArr = {};
         weekArr = setWeekArray(true);
         setDatesOfWeek(weekArr);
@@ -125,6 +155,7 @@ public class CalendarFragment extends Fragment {
         int minute = 0;
         String h = "";
         String m = "";
+        //Отображение времени
         for (int i = 0; i < 32; i++) {
             FrameLayout frameLayout = new FrameLayout(getContext());
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 140));
@@ -291,10 +322,79 @@ public class CalendarFragment extends Fragment {
 
         }
 
+        myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId());
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getChildrenCount();
+
+                for (DataSnapshot postSnapshotOut : snapshot.getChildren()) {
+                    for (DataSnapshot postSnapshotOInner : postSnapshotOut.getChildren()) {
+                        WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
+//                        Log.e("Get Data", workerData.getDOCT_NAME());
+
+//                        String[] workerDate = workerData.getREC_TIME().split("-|T");
+//                        String date = workerDate[0] + "." + workerDate[1] + "." + workerDate[2];
+//                        Log.e("DATE", date);
+//                        int count = (int) postSnapshotOut.getChildrenCount();
+//                        Log.e("COUNT", String.valueOf(count));
+//                        activityEntityList.add(new ActivityEntity(date, count));
+//                        adapter.notifyDataSetChanged();
+
+//                        workerDataList.add(workerData);
+
+                        patientsTime.add(workerData.getREC_TIME());
+
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+        //Отображение ячеек
         for (int i = 0; i < 256; i++) {
             FrameLayout frameLayout = new FrameLayout(getContext());
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams(140, 140));
             frameLayout.setBackgroundResource(R.drawable.border);
+
+            int numOfColumn = 0;
+            for (String s : patientsTime) {
+                numOfColumn = i % 8;
+
+                String[] workerDate = s.split("-|T|:");
+                String date = workerDate[0] + "." + workerDate[1] + "." + workerDate[2];
+
+                String dayOfWMonth = workerDate[2];
+
+                String time = workerDate[3] + ":" + workerDate[4];
+
+                String format = "yyyy-MM-dd";
+                SimpleDateFormat df = new SimpleDateFormat(format);
+                Date chosen_date = null;
+                try {
+                    chosen_date = df.parse(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(chosen_date);
+                int week = cal.get(Calendar.WEEK_OF_YEAR);
+
+                if (week == chosenWeek) {
+                    if (Integer.parseInt(dayOfWMonth) == numOfColumn) {
+//                        ImageView
+                    }
+                }
+
+            }
 
             gridLayout.addView(frameLayout);
 
