@@ -15,7 +15,7 @@
             android:title="@string/menu_calendar" />
         <item
             android:id="@+id/nav_colleagues"
-            android:icon="@drawable/ic_baseline_elderly_24"
+            android:icon="@drawable/ic_baseline_supervisor_account_24"
             android:title="@string/menu_colleagues"/>
         <item
             android:id="@+id/nav_activity"

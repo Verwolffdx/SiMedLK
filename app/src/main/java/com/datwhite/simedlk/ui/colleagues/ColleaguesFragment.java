@@ -100,8 +100,7 @@ public class ColleaguesFragment extends Fragment {
         ColleaguesAdapter.OnColleagueClickListener colleagueClickListener = new ColleaguesAdapter.OnColleagueClickListener() {
             @Override
             public void onColleagueClick(Doctor doctor, int position) {
-                Toast.makeText(getContext(), "Был выбран коллега " + doctor.getName(),
-                        Toast.LENGTH_SHORT).show();
+
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("doctor", doctor);
