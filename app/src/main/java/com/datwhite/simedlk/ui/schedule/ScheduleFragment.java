@@ -80,6 +80,7 @@ public class ScheduleFragment extends Fragment {
 
 
         workerCellsResponse = app.getWorkerCellsResponse();
+        todayPatients.clear();
 
         for (WorkerData w : app.getAuthResponse().getWorkerData()) {
             String[] workerDate = w.getREC_TIME().split("-|T|:");
@@ -168,8 +169,11 @@ public class ScheduleFragment extends Fragment {
         ScheduleAdapter.OnScheduleClickListener colleagueClickListener = new ScheduleAdapter.OnScheduleClickListener() {
             @Override
             public void onScheduleClick(WorkerData workerData, int position) {
-                Toast.makeText(getContext(), "Была выбрана запись ",
+                Toast.makeText(getContext(), "Была выбрана запись " + workerData.getCARD_NUMBER(),
                         Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("cardNumber", workerData.getCARD_NUMBER());
+                navController.navigate(R.id.nav_patient_info, bundle);
 
 //                Bundle bundle = new Bundle();
 //                bundle.putSerializable("doctor", doctor);

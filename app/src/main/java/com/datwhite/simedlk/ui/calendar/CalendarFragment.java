@@ -63,12 +63,12 @@ public class CalendarFragment extends Fragment {
 
     private Spinner spinner;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef;
+//    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//    DatabaseReference myRef;
 
     private List<ActivityEntity> activityEntityList = new ArrayList<>();
     private List<WorkerData> workerDataList = new ArrayList<>();
-    private List<String> patientsTime = new ArrayList<>();
+//    private List<String> patientsTime = new ArrayList<>();
 
     String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
 
@@ -104,6 +104,7 @@ public class CalendarFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_calendar, container, false);
         app = (App) getActivity().getApplication();
+//        myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId());
 
         spinner = (Spinner) root.findViewById(R.id.month_spinner);
 
@@ -143,6 +144,9 @@ public class CalendarFragment extends Fragment {
         String[] weekArr = {};
         weekArr = setWeekArray(true);
         setDatesOfWeek(weekArr);
+
+
+
 
         week.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeLeft() {
@@ -344,50 +348,40 @@ public class CalendarFragment extends Fragment {
 
         }
 
-        myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId());
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                snapshot.getChildrenCount();
-
-                for (DataSnapshot postSnapshotOut : snapshot.getChildren()) {
-                    for (DataSnapshot postSnapshotOInner : postSnapshotOut.getChildren()) {
-                        WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
-//                        Log.e("Get Data", workerData.getDOCT_NAME());
-
-//                        String[] workerDate = workerData.getREC_TIME().split("-|T");
-//                        String date = workerDate[0] + "." + workerDate[1] + "." + workerDate[2];
-//                        Log.e("DATE", date);
-//                        int count = (int) postSnapshotOut.getChildrenCount();
-//                        Log.e("COUNT", String.valueOf(count));
-//                        activityEntityList.add(new ActivityEntity(date, count));
-//                        adapter.notifyDataSetChanged();
-
-//                        workerDataList.add(workerData);
-
-                        patientsTime.add(workerData.getREC_TIME());
-
-//                        for (String s : patientsTime) {
-//                            System.out.println(s);
-//                        }
-
-                    }
-                }
 
 
-            }
 
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
-            }
-        });
+
+
+//        myRef.addValueEventListener(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+////                snapshot.getChildrenCount();
+//
+//                for (DataSnapshot postSnapshotOut : snapshot.getChildren()) {
+//                    for (DataSnapshot postSnapshotOInner : postSnapshotOut.getChildren()) {
+//                        WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
+//                        patientsTime.add(workerData.getREC_TIME());
+////                        System.out.println("workerData " + workerData.getREC_TIME());
+////                        System.out.println("postSnapshotOInner " + postSnapshotOut.getChildrenCount());
+//                    }
+//                }
+//
+////                System.out.println("snapshot.getChildrenCount(); " + snapshot.getChildrenCount());
+////                System.out.println("ADD PATIENTS TIME");
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//
+//            }
+//        });
+
 
         displayCells();
-
-
-
 
         return root;
     }
@@ -396,6 +390,9 @@ public class CalendarFragment extends Fragment {
     private void displayCells() {
         //Отображение ячеек
         gridLayout.removeAllViews();
+
+
+
         for (int i = 0; i < 256; i++) {
             RelativeLayout relativeLayout = new RelativeLayout(getContext());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(140, 140);
@@ -406,9 +403,13 @@ public class CalendarFragment extends Fragment {
             relativeLayout.addView(img, layoutParams);
 
             int numOfColumn = 0;
-
-            for (String s : patientsTime) {
+//            System.out.println("patientsTime " + app.getPatientsTime().size());
+            for (String s : app.getPatientsTime()) {
                 numOfColumn = i % 8;
+
+//                System.out.println("app.getPatientsTime() " + app.getPatientsTime().size());
+                System.out.println("!!!S!!!" + s);
+
 
                 String[] workerDate = s.split("-|T|:");
                 String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
@@ -416,6 +417,8 @@ public class CalendarFragment extends Fragment {
                 String dayOfWMonth = workerDate[2];
 
                 String time = workerDate[3] + ":" + workerDate[4];
+                System.out.println("TIME " + time);
+                System.out.println("rowTimes " + rowTimes.size());
 
                 String format = "yyyy-MM-dd";
                 SimpleDateFormat df = new SimpleDateFormat(format);
@@ -432,19 +435,19 @@ public class CalendarFragment extends Fragment {
 
                 int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2;
 
-                System.out.println("current_week " + current_week);
-                System.out.println("chosenWeek" + chosenWeek);
-                System.out.println("dayOfWeek" + dayOfWeek);
-                System.out.println("numOfColumn" + numOfColumn);
+//                System.out.println("current_week " + current_week);
+//                System.out.println("chosenWeek" + chosenWeek);
+//                System.out.println("dayOfWeek" + dayOfWeek);
+//                System.out.println("numOfColumn" + numOfColumn);
                 if (String.valueOf(current_week).equals(String.valueOf(chosenWeek))) {
-
+//                    System.out.println("FIND WEEK");
                     if (dayOfWeek == numOfColumn) {
-                        System.out.println("FIND COLUMN");
+//                        System.out.println("FIND COLUMN");
 //                        System.out.println("COLUMN " + numOfColumn);
 //                        System.out.println(rowTimes.get(time) * numOfColumn);
-                        System.out.println(i);
+//                        System.out.println(i);
                         if (rowTimes.get(time) * 8 + numOfColumn == i) {
-                            System.out.println("FIND!!!");
+//                            System.out.println("FIND!!!");
                             img.setImageResource(R.drawable.ic_sharp_account_box_24);
                         }
                     }
@@ -455,6 +458,8 @@ public class CalendarFragment extends Fragment {
             gridLayout.addView(relativeLayout);
 
         }
+
+
     }
 
     @SuppressLint("ResourceAsColor")
@@ -545,6 +550,7 @@ public class CalendarFragment extends Fragment {
         switch (ofWeek) {
             case 1:
                 if (swipeCount == 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now());
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(1));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(2));
@@ -553,6 +559,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(5));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(6));
                 } else if (swipeCount > 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().plusDays(swipeCount * 7 - 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 0));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 1));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 2));
@@ -561,6 +568,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 5));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 6));
                 } else if (swipeCount < 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 0));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 - 1));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 - 2));
@@ -572,6 +580,7 @@ public class CalendarFragment extends Fragment {
                 break;
             case 2:
                 if (swipeCount == 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(1));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now());
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(1));
@@ -580,6 +589,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(4));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(5));
                 } else if (swipeCount > 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().plusDays(swipeCount * 7 - 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 1));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 0));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 1));
@@ -588,6 +598,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 4));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 5));
                 } else if (swipeCount < 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 1));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 0));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 - 1));
@@ -598,6 +609,7 @@ public class CalendarFragment extends Fragment {
                 }
             case 3:
                 if (swipeCount == 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(2));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(1));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now());
@@ -606,6 +618,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(3));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(4));
                 } else if (swipeCount > 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().plusDays(swipeCount * 7 - 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 2));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 1));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 0));
@@ -614,6 +627,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 3));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 4));
                 } else if (swipeCount < 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 2));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 1));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 0));
@@ -625,6 +639,7 @@ public class CalendarFragment extends Fragment {
                 break;
             case 4:
                 if (swipeCount == 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(3));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(2));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(1));
@@ -633,6 +648,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(2));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(3));
                 } else if (swipeCount > 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().plusDays(swipeCount * 7 - 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 3));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 2));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 1));
@@ -641,6 +657,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 2));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 3));
                 } else if (swipeCount < 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 3));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 2));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 1));
@@ -652,6 +669,7 @@ public class CalendarFragment extends Fragment {
                 break;
             case 5:
                 if (swipeCount == 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(4));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(3));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(2));
@@ -660,6 +678,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(1));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(2));
                 } else if (swipeCount > 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().plusDays(swipeCount * 7 - 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 4));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 3));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 - 2));
@@ -668,6 +687,7 @@ public class CalendarFragment extends Fragment {
                     arr[5] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 1));
                     arr[6] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().plusDays(swipeCount * 7 + 2));
                 } else if (swipeCount < 0) {
+                    spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 4));
                     arr[1] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 3));
                     arr[2] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(Math.abs(swipeCount) * 7 + 2));
@@ -678,7 +698,6 @@ public class CalendarFragment extends Fragment {
                 }
                 break;
             case 6:
-
                 if (swipeCount == 0) {
                     spinner.setSelection(Integer.parseInt(DateTimeFormatter.ofPattern("MM").format(LocalDateTime.now().minusDays(5))) - 1);
                     arr[0] = DateTimeFormatter.ofPattern("dd").format(LocalDateTime.now().minusDays(5));

@@ -6,18 +6,20 @@ import android.content.Context;
 import androidx.multidex.MultiDex;
 import androidx.navigation.NavController;
 
-import com.datwhite.simedlk.api.SiMedService;
+import com.datwhite.simedlk.api.heroku.HerokuService;
+import com.datwhite.simedlk.api.simed.SiMedService;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.auth.AuthResponse;
 import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class App extends Application {
     private SiMedService siMedService;
+    private HerokuService herokuService;
 
     private Doctor doctor;
     private MedOrg medOrg;
@@ -25,6 +27,7 @@ public class App extends Application {
     private Map<String, String> specializations;
     private WorkerCellsResponse workerCellsResponse;
     private AuthResponse authResponse;
+    private List<String> patientsTime = new ArrayList<>();
 
     private NavController navController;
 
@@ -34,6 +37,8 @@ public class App extends Application {
         MultiDex.install(this);
 
         siMedService = new SiMedService();
+        herokuService = new HerokuService();
+
     }
 
     @Override
@@ -100,5 +105,17 @@ public class App extends Application {
 
     public void setAuthResponse(AuthResponse authResponse) {
         this.authResponse = authResponse;
+    }
+
+    public List<String> getPatientsTime() {
+        return patientsTime;
+    }
+
+    public void setPatientsTime(List<String> patientsTime) {
+        this.patientsTime = patientsTime;
+    }
+
+    public HerokuService getHerokuService() {
+        return herokuService;
     }
 }

@@ -16,11 +16,18 @@ import android.widget.TextView;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.Specialization;
+import com.datwhite.simedlk.entity.auth.WorkerData;
 import com.datwhite.simedlk.ui.profile.ProfileFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavArgument;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -31,6 +38,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private App app;
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef;
+
     public static void start(Context caller, Doctor doctor, String medOrgId, HashMap<String, String> specializations) {
         Intent intent = new Intent(caller, MainActivity.class);
         intent.putExtra(Doctor.class.getSimpleName(), (Serializable) doctor);
@@ -62,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         app = (App) getApplication();
+
+        myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId());
+
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +159,39 @@ public class MainActivity extends AppCompatActivity {
                 profile_photo.setImageBitmap(bitmap);
             }
 
+
+
         }
+
+        //Календарь
+        myRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//                snapshot.getChildrenCount();
+                List<String> patientsTime = new ArrayList<>();
+                for (DataSnapshot postSnapshotOut : snapshot.getChildren()) {
+                    for (DataSnapshot postSnapshotOInner : postSnapshotOut.getChildren()) {
+                        WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
+                        patientsTime.add(workerData.getREC_TIME());
+//                        System.out.println("workerData " + workerData.getREC_TIME());
+//                        System.out.println("postSnapshotOInner " + postSnapshotOut.getChildrenCount());
+                    }
+                }
+
+                app.setPatientsTime(patientsTime);
+
+                System.out.println("snapshot.getChildrenCount(); " + snapshot.getChildrenCount());
+                System.out.println("ADD PATIENTS TIME");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     ////Обработка нажатия на кнопкку настроек (правый верхний угол)

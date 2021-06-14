@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10px"
-
-
     android:orientation="vertical"
     android:padding="10px">
 
@@ -15,12 +13,14 @@
         android:background="@drawable/border_item"
         android:backgroundTint="#A6C7FF"
         android:orientation="vertical"
-        android:padding="10px">
+        android:padding="10px"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -32,14 +32,15 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/patientName"
+            <TextView
+                android:id="@+id/patientNameInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:background="@drawable/border_item"
                 android:padding="10px"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <LinearLayout
@@ -57,14 +58,15 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/patientSurname"
+            <TextView
+                android:id="@+id/patientSurnameInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:background="@drawable/border_item"
                 android:padding="10px"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <LinearLayout
@@ -82,14 +84,15 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/patientPatronymic"
+            <TextView
+                android:id="@+id/patientPatronymicInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:background="@drawable/border_item"
                 android:padding="10px"
-                android:textSize="18dp" />
+                android:textSize="18dp"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <LinearLayout
@@ -108,7 +111,7 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/patientAge"
+                android:id="@+id/patientAgeInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -134,7 +137,7 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/patientDate"
+                android:id="@+id/patientDateInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -159,12 +162,15 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-            <Spinner
-                android:id="@+id/patientTime"
+            <TextView
+                android:id="@+id/patientTimeInfo"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
+                android:textColor="@color/black"
                 android:background="@drawable/border_item"
+                android:padding="10px"
+                android:textSize="18dp"
                 />
 
 
@@ -175,14 +181,6 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/addPatientBtn"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:background="@drawable/button_border"
-        android:text="Записать"
-        android:layout_marginTop="20px"/>
 
 
 </LinearLayout>

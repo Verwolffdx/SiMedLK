@@ -1,4 +1,6 @@
-package com.datwhite.simedlk.api;
+package com.datwhite.simedlk.api.simed;
+
+import com.datwhite.simedlk.api.simed.SiMedApi;
 
 import org.jetbrains.annotations.NotNull;
 

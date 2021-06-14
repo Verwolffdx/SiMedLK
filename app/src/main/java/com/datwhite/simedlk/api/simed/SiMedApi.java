@@ -1,4 +1,4 @@
-package com.datwhite.simedlk.api;
+package com.datwhite.simedlk.api.simed;
 
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;

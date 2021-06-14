@@ -47,6 +47,12 @@
         android:label="Пациент"
         tools:layout="@layout/fragment_add_patient"/>
 
+    <fragment
+        android:id="@+id/nav_patient_info"
+        android:name="com.datwhite.simedlk.ui.schedule.PatientInfoFragment"
+        android:label="Пациент"
+        tools:layout="@layout/fragment_patient_info"/>
+
     <action android:id="@+id/EditProfileFragment"
         app:destination="@id/nav_profile"
         app:enterAnim="@anim/nav_default_enter_anim"
