@@ -1,5 +1,6 @@
 package com.datwhite.simedlk.ui.schedule;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,6 +31,8 @@ import com.datwhite.simedlk.ui.colleagues.ColleaguesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +52,9 @@ public class ScheduleFragment extends Fragment {
 
     private List<Cell> scheduleList;
 
+    private List<WorkerData> todayPatients = new ArrayList<>();
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         scheduleViewModel =
@@ -74,6 +81,14 @@ public class ScheduleFragment extends Fragment {
 
         workerCellsResponse = app.getWorkerCellsResponse();
 
+        for (WorkerData w : app.getAuthResponse().getWorkerData()) {
+            String[] workerDate = w.getREC_TIME().split("-|T|:");
+            String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
+            if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
+                todayPatients.add(w);
+            }
+        }
+
 
         if (app.getAuthResponse().getWorkerData() != null) {
 //            scheduleList = app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells();
@@ -82,7 +97,7 @@ public class ScheduleFragment extends Fragment {
 //                if (!c.isFree())
 //                    schedule.add(c);
 //            }
-            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, app.getAuthResponse().getWorkerData());
+            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, todayPatients);
             recyclerView.setAdapter(adapter);
         } else {
             CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
@@ -140,8 +155,6 @@ public class ScheduleFragment extends Fragment {
          */
 
 
-
-
 //        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override
 //            public void onChanged(@Nullable String s) {
@@ -178,9 +191,6 @@ public class ScheduleFragment extends Fragment {
 //                transaction.addToBackStack("Back"); // Добавляете в backstack, чтобы можно было вернутся обратно
 //
 //                transaction.commit();
-
-
-
 
 
 //                getSupportFragmentManager().beginTransaction()

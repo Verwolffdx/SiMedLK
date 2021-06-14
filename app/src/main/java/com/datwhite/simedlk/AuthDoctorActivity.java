@@ -50,6 +50,12 @@ public class AuthDoctorActivity extends AppCompatActivity {
     private EditText authDocPhone;
     private EditText authDocPassword;
 
+    private int MAX = 30;
+    private int COUNT = 0;
+
+    private int childrenCount = 0;
+    private int toadyPatientsCount = 0;
+
     CompositeDisposable disposable = new CompositeDisposable();
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -60,6 +66,8 @@ public class AuthDoctorActivity extends AppCompatActivity {
     //    private List<Doctor> colleagues = new ArrayList<>();
     private Map<String, String> specs = new HashMap<>();
 
+    List<WorkerData> todayPatients = new ArrayList<>();
+
     public static void start(Context caller, Doctor doctor, String medOrgId, HashMap<String, String> specializations) {
         Intent intent = new Intent(caller, MainActivity.class);
         intent.putExtra(Doctor.class.getSimpleName(), (Serializable) doctor);
@@ -68,6 +76,7 @@ public class AuthDoctorActivity extends AppCompatActivity {
         caller.startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +91,9 @@ public class AuthDoctorActivity extends AppCompatActivity {
         doctor = app.getDoctor();
         medorg = app.getMedOrg();
         specs = app.getSpecializations();
+
+        myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId()).child(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())));
+
 
 
         btn_doc_auth.setOnClickListener(new View.OnClickListener() {
@@ -117,26 +129,53 @@ public class AuthDoctorActivity extends AppCompatActivity {
                                             Toast.makeText(AuthDoctorActivity.this, "Неверный пароль", Toast.LENGTH_SHORT).show();
                                         } else {
                                             app.setAuthResponse(authResponse);
+                                            todayPatients.clear();
+                                            for (WorkerData w : authResponse.getWorkerData()) {
+                                                String[] workerDate = w.getREC_TIME().split("-|T|:");
+                                                String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
+                                                if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
+                                                    todayPatients.add(w);
+                                                    toadyPatientsCount = todayPatients.size();
+                                                }
+                                            }
 
-                                            myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId()).child(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())));
 
 //                                            myRef.setValue(authResponse.getWorkerData());
 //                                            for (WorkerData w : authResponse.getWorkerData())
 //                                                myRef.setValue(w);
 
 
-                                            if (authResponse.getWorkerData() != null) {
+                                            if (toadyPatientsCount != childrenCount) {
+
                                                 myRef.addValueEventListener(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 //                                                    Log.e("Count ", "" + snapshot.getChildrenCount());
                                                         //если в БД записей меньше, чем приходит в ответ на автоизацию ->
                                                         //дописать недостающие в БД
-                                                        if (snapshot.getChildrenCount() != authResponse.getWorkerData().size()) {
-                                                            for (int i = (int) (snapshot.getChildrenCount() - 1); i < authResponse.getWorkerData().size(); i++) {
-                                                                myRef.setValue(authResponse.getWorkerData().get(i));
-                                                            }
+
+                                                        System.out.println("toadyPatientsCount " + toadyPatientsCount);
+                                                        System.out.println("childrenCount" + childrenCount);
+
+
+
+                                                        System.out.println("todayPatients.size() " + todayPatients.size());
+                                                        System.out.println("CHILDREN COUNT " + snapshot.getChildrenCount());
+                                                        System.out.println("getWorkerData().size() " + authResponse.getWorkerData().size());
+                                                        if (childrenCount != toadyPatientsCount) {
+                                                            childrenCount = (int) snapshot.getChildrenCount();
+
+//                                                            List<WorkerData> newPatients = new ArrayList<>();
+
+//                                                            for (int i = (int) (snapshot.getChildrenCount()); i < authResponse.getWorkerData().size(); i++) {
+//
+//                                                                newPatients.add(authResponse.getWorkerData().get(i));
+//
+//                                                            }
+                                                            myRef.setValue(todayPatients);
+                                                            COUNT++;
                                                         }
+
 
                                                     }
 

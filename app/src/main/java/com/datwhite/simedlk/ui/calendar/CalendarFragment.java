@@ -395,21 +395,8 @@ public class CalendarFragment extends Fragment {
     @SuppressLint("ResourceType")
     private void displayCells() {
         //Отображение ячеек
-//        GridLayout gridLayout = new GridLayout(getContext());
-//        gridLayout.setColumnCount(8);
-//        gridLayout.setRowCount(12);
-//        GridLayout.LayoutParams lp = new GridLayout.LayoutParams();
-//        lp.width = GridLayout.LayoutParams.MATCH_PARENT;
-//        lp.height = GridLayout.LayoutParams.MATCH_PARENT;
-//        gridLayout.setLayoutParams(lp);
-//        gridLayout.setOrientation(GridLayout.HORIZONTAL);
-
         gridLayout.removeAllViews();
         for (int i = 0; i < 256; i++) {
-//            FrameLayout frameLayout = new FrameLayout(getContext());
-//            frameLayout.setLayoutParams(new LinearLayout.LayoutParams(140, 140));
-//            frameLayout.setBackgroundResource(R.drawable.border);
-
             RelativeLayout relativeLayout = new RelativeLayout(getContext());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(140, 140);
 
@@ -444,32 +431,22 @@ public class CalendarFragment extends Fragment {
                 chosenWeek = cal.get(Calendar.WEEK_OF_YEAR);
 
                 int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2;
-//                System.out.println("DAY OF WEEK " + dayOfWeek);
 
-//                System.out.println("chosenWeek " + chosenWeek);
-//                System.out.println("current_week " + current_week);
+                System.out.println("current_week " + current_week);
+                System.out.println("chosenWeek" + chosenWeek);
+                System.out.println("dayOfWeek" + dayOfWeek);
+                System.out.println("numOfColumn" + numOfColumn);
                 if (String.valueOf(current_week).equals(String.valueOf(chosenWeek))) {
-//                    System.out.println(dayOfWeek);
-//                    System.out.println(numOfColumn);
+
                     if (dayOfWeek == numOfColumn) {
-                        System.out.println("COLUMN " + numOfColumn);
-                        System.out.println(rowTimes.get(time) * numOfColumn);
+                        System.out.println("FIND COLUMN");
+//                        System.out.println("COLUMN " + numOfColumn);
+//                        System.out.println(rowTimes.get(time) * numOfColumn);
                         System.out.println(i);
                         if (rowTimes.get(time) * 8 + numOfColumn == i) {
                             System.out.println("FIND!!!");
                             img.setImageResource(R.drawable.ic_sharp_account_box_24);
                         }
-//                        View v = new ImageView(getActivity().getBaseContext());
-//                        ImageView image;
-//                        image = new ImageView(getContext());
-//                        image.setImageResource(R.drawable.ic_sharp_account_box_24);
-
-
-//                        image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_sharp_account_box_24));
-
-//                        image.setLayoutParams(new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-//                        relativeLayout.addView(image, layoutParams);
-
                     }
                 }
 
@@ -477,15 +454,7 @@ public class CalendarFragment extends Fragment {
 
             gridLayout.addView(relativeLayout);
 
-
         }
-//        grid.addView(gridLayout);
-
-
-//        getLayoutInflater().inflate(R.id.grid, );
-//        TextView textView = new TextView(getContext());
-//        textView.setText("HELLO");
-//        grid.addView(textView);
     }
 
     @SuppressLint("ResourceAsColor")
