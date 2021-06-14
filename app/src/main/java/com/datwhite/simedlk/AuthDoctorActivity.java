@@ -95,7 +95,6 @@ public class AuthDoctorActivity extends AppCompatActivity {
         myRef = database.getReference("activity").child(app.getDoctor().getId() + "_from_" + app.getMedOrg().getId()).child(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())));
 
 
-
         btn_doc_auth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,12 +129,14 @@ public class AuthDoctorActivity extends AppCompatActivity {
                                         } else {
                                             app.setAuthResponse(authResponse);
                                             todayPatients.clear();
-                                            for (WorkerData w : authResponse.getWorkerData()) {
-                                                String[] workerDate = w.getREC_TIME().split("-|T|:");
-                                                String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
-                                                if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
-                                                    todayPatients.add(w);
-                                                    toadyPatientsCount = todayPatients.size();
+                                            if (authResponse.getWorkerData() != null) {
+                                                for (WorkerData w : authResponse.getWorkerData()) {
+                                                    String[] workerDate = w.getREC_TIME().split("-|T|:");
+                                                    String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
+                                                    if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
+                                                        todayPatients.add(w);
+                                                        toadyPatientsCount = todayPatients.size();
+                                                    }
                                                 }
                                             }
 
@@ -156,7 +157,6 @@ public class AuthDoctorActivity extends AppCompatActivity {
 
                                                         System.out.println("toadyPatientsCount " + toadyPatientsCount);
                                                         System.out.println("childrenCount" + childrenCount);
-
 
 
                                                         System.out.println("todayPatients.size() " + todayPatients.size());

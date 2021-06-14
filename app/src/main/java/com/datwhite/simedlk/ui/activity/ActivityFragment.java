@@ -64,7 +64,7 @@ public class ActivityFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 snapshot.getChildrenCount();
-
+//                ActivityEntity activityEntity = new ActivityEntity();
                 for (DataSnapshot postSnapshotOut : snapshot.getChildren()) {
                     for (DataSnapshot postSnapshotOInner : postSnapshotOut.getChildren()) {
                         WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
@@ -75,11 +75,33 @@ public class ActivityFragment extends Fragment {
 //                        Log.e("DATE", date);
                         int count = (int) postSnapshotOut.getChildrenCount();
 //                        Log.e("COUNT", String.valueOf(count));
-                        activityEntityList.add(new ActivityEntity(date, count));
-                        adapter.notifyDataSetChanged();
+//                        activityEntity.setActivity_date(date);
+//                        activityEntity.setCount_patients(count);
+
+
+
+                        if (activityEntityList.size() == 0) {
+//                            System.out.println(" 0 " + activityEntity.getActivity_date());
+                            activityEntityList.add(new ActivityEntity(date, count));
+                            adapter.notifyDataSetChanged();
+                        } else if (!activityEntityList.get(activityEntityList.size()-1).getActivity_date().equals(date)) {
+
+                            activityEntityList.add(new ActivityEntity(date, count));
+                            adapter.notifyDataSetChanged();
+//                            System.out.println("HZ " + activityEntity.getActivity_date());
+                        }
+
+
+
+
+//                        System.out.println("activityEntityList " + activityEntityList.size());
 
 
                     }
+                }
+
+                for(ActivityEntity a : activityEntityList) {
+                    System.out.println(a.getActivity_date());
                 }
 
 

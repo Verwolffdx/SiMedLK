@@ -79,19 +79,22 @@ public class ScheduleFragment extends Fragment {
         });
 
 
-        workerCellsResponse = app.getWorkerCellsResponse();
-        todayPatients.clear();
 
-        for (WorkerData w : app.getAuthResponse().getWorkerData()) {
-            String[] workerDate = w.getREC_TIME().split("-|T|:");
-            String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
-            if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
-                todayPatients.add(w);
-            }
-        }
 
 
         if (app.getAuthResponse().getWorkerData() != null) {
+
+            workerCellsResponse = app.getWorkerCellsResponse();
+            todayPatients.clear();
+
+            for (WorkerData w : app.getAuthResponse().getWorkerData()) {
+                String[] workerDate = w.getREC_TIME().split("-|T|:");
+                String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
+                if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
+                    todayPatients.add(w);
+                }
+            }
+
 //            scheduleList = app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells();
 //            List<Cell> schedule = new ArrayList<>();
 //            for (Cell c : scheduleList) {
@@ -169,8 +172,7 @@ public class ScheduleFragment extends Fragment {
         ScheduleAdapter.OnScheduleClickListener colleagueClickListener = new ScheduleAdapter.OnScheduleClickListener() {
             @Override
             public void onScheduleClick(WorkerData workerData, int position) {
-                Toast.makeText(getContext(), "Была выбрана запись " + workerData.getCARD_NUMBER(),
-                        Toast.LENGTH_SHORT).show();
+
                 Bundle bundle = new Bundle();
                 bundle.putString("cardNumber", workerData.getCARD_NUMBER());
                 navController.navigate(R.id.nav_patient_info, bundle);
