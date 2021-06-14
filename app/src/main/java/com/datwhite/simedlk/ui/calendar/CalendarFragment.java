@@ -1,10 +1,13 @@
 package com.datwhite.simedlk.ui.calendar;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -48,7 +53,9 @@ import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CalendarFragment extends Fragment {
     private View root;
@@ -86,6 +93,10 @@ public class CalendarFragment extends Fragment {
     private int chosenWeek = 0;
     private int chosenMonth = 0;
 
+    private Map<String, Integer> rowTimes = new HashMap<>();
+
+    private GridLayout gridLayout;
+
 
     @SuppressLint({"NewApi", "ResourceAsColor", "ClickableViewAccessibility"})
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -106,8 +117,10 @@ public class CalendarFragment extends Fragment {
         int month = calendar.get(java.util.Calendar.MONTH);
         current_month = month - 1;
 
-        GridLayout gridLayout = root.findViewById(R.id.day_patients);
+        gridLayout = root.findViewById(R.id.day_patients);
         GridLayout gridLayoutTimes = root.findViewById(R.id.times);
+
+        grid = root.findViewById(R.id.grid);
 
         monday = root.findViewById(R.id.monday);
         tuesday = root.findViewById(R.id.tuesday);
@@ -116,8 +129,6 @@ public class CalendarFragment extends Fragment {
         friday = root.findViewById(R.id.friday);
         saturday = root.findViewById(R.id.saturday);
         sunday = root.findViewById(R.id.sunday);
-
-        grid = root.findViewById(R.id.grid);
 
         week = root.findViewById(R.id.week);
 
@@ -136,20 +147,28 @@ public class CalendarFragment extends Fragment {
         week.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             public void onSwipeLeft() {
                 swipeCount++;
+                current_week++;
                 System.out.println(swipeCount);
                 String[] weekArr = setWeekArray(true);
                 setDatesOfWeek(weekArr);
                 Toast.makeText(getContext(), "left", Toast.LENGTH_SHORT).show();
+
+                displayCells();
             }
 
             public void onSwipeRight() {
                 swipeCount--;
+                current_week--;
                 System.out.println(swipeCount);
                 String[] weekArr = setWeekArray(true);
                 setDatesOfWeek(weekArr);
                 Toast.makeText(getContext(), "right", Toast.LENGTH_SHORT).show();
+
+                displayCells();
             }
         });
+
+
 
         int hour = 0;
         int minute = 0;
@@ -160,6 +179,8 @@ public class CalendarFragment extends Fragment {
             FrameLayout frameLayout = new FrameLayout(getContext());
             frameLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 140));
             frameLayout.setBackgroundResource(R.drawable.border);
+
+
 
 //            for (int j = 8; j <= 18; j++) {
             if (hour == 0) {
@@ -311,6 +332,7 @@ public class CalendarFragment extends Fragment {
 
             TextView textView = new TextView(getContext());
             textView.setText(h + m);
+            rowTimes.put(h + m, i);
             textView.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
             textView.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
             textView.setTextSize(10);
@@ -346,6 +368,10 @@ public class CalendarFragment extends Fragment {
 
                         patientsTime.add(workerData.getREC_TIME());
 
+//                        for (String s : patientsTime) {
+//                            System.out.println(s);
+//                        }
+
                     }
                 }
 
@@ -358,18 +384,47 @@ public class CalendarFragment extends Fragment {
             }
         });
 
+        displayCells();
+
+
+
+
+        return root;
+    }
+
+    @SuppressLint("ResourceType")
+    private void displayCells() {
         //Отображение ячеек
+//        GridLayout gridLayout = new GridLayout(getContext());
+//        gridLayout.setColumnCount(8);
+//        gridLayout.setRowCount(12);
+//        GridLayout.LayoutParams lp = new GridLayout.LayoutParams();
+//        lp.width = GridLayout.LayoutParams.MATCH_PARENT;
+//        lp.height = GridLayout.LayoutParams.MATCH_PARENT;
+//        gridLayout.setLayoutParams(lp);
+//        gridLayout.setOrientation(GridLayout.HORIZONTAL);
+
+        gridLayout.removeAllViews();
         for (int i = 0; i < 256; i++) {
-            FrameLayout frameLayout = new FrameLayout(getContext());
-            frameLayout.setLayoutParams(new LinearLayout.LayoutParams(140, 140));
-            frameLayout.setBackgroundResource(R.drawable.border);
+//            FrameLayout frameLayout = new FrameLayout(getContext());
+//            frameLayout.setLayoutParams(new LinearLayout.LayoutParams(140, 140));
+//            frameLayout.setBackgroundResource(R.drawable.border);
+
+            RelativeLayout relativeLayout = new RelativeLayout(getContext());
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(140, 140);
+
+            ImageView img = new ImageView(getContext());
+            img.setImageResource(R.drawable.border);
+
+            relativeLayout.addView(img, layoutParams);
 
             int numOfColumn = 0;
+
             for (String s : patientsTime) {
                 numOfColumn = i % 8;
 
                 String[] workerDate = s.split("-|T|:");
-                String date = workerDate[0] + "." + workerDate[1] + "." + workerDate[2];
+                String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
 
                 String dayOfWMonth = workerDate[2];
 
@@ -386,22 +441,51 @@ public class CalendarFragment extends Fragment {
 
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(chosen_date);
-                int week = cal.get(Calendar.WEEK_OF_YEAR);
+                chosenWeek = cal.get(Calendar.WEEK_OF_YEAR);
 
-                if (week == chosenWeek) {
-                    if (Integer.parseInt(dayOfWMonth) == numOfColumn) {
-//                        ImageView
+                int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2;
+//                System.out.println("DAY OF WEEK " + dayOfWeek);
+
+//                System.out.println("chosenWeek " + chosenWeek);
+//                System.out.println("current_week " + current_week);
+                if (String.valueOf(current_week).equals(String.valueOf(chosenWeek))) {
+//                    System.out.println(dayOfWeek);
+//                    System.out.println(numOfColumn);
+                    if (dayOfWeek == numOfColumn) {
+                        System.out.println("COLUMN " + numOfColumn);
+                        System.out.println(rowTimes.get(time) * numOfColumn);
+                        System.out.println(i);
+                        if (rowTimes.get(time) * 8 + numOfColumn == i) {
+                            System.out.println("FIND!!!");
+                            img.setImageResource(R.drawable.ic_sharp_account_box_24);
+                        }
+//                        View v = new ImageView(getActivity().getBaseContext());
+//                        ImageView image;
+//                        image = new ImageView(getContext());
+//                        image.setImageResource(R.drawable.ic_sharp_account_box_24);
+
+
+//                        image.setImageDrawable(v.getResources().getDrawable(R.drawable.ic_sharp_account_box_24));
+
+//                        image.setLayoutParams(new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+//                        relativeLayout.addView(image, layoutParams);
+
                     }
                 }
 
             }
 
-            gridLayout.addView(frameLayout);
+            gridLayout.addView(relativeLayout);
+
 
         }
+//        grid.addView(gridLayout);
 
 
-        return root;
+//        getLayoutInflater().inflate(R.id.grid, );
+//        TextView textView = new TextView(getContext());
+//        textView.setText("HELLO");
+//        grid.addView(textView);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -689,13 +773,13 @@ public class CalendarFragment extends Fragment {
 
 
 //        for (int i = 0; i < 7; i++) {
-        System.out.println("Пн" + arr[0]);
-        System.out.println("Вт" + arr[1]);
-        System.out.println("Ср" + arr[2]);
-        System.out.println("Чт" + arr[3]);
-        System.out.println("Пт" + arr[4]);
-        System.out.println("Сб" + arr[5]);
-        System.out.println("Вс" + arr[6]);
+//        System.out.println("Пн" + arr[0]);
+//        System.out.println("Вт" + arr[1]);
+//        System.out.println("Ср" + arr[2]);
+//        System.out.println("Чт" + arr[3]);
+//        System.out.println("Пт" + arr[4]);
+//        System.out.println("Сб" + arr[5]);
+//        System.out.println("Вс" + arr[6]);
 //        }
 
         return arr;

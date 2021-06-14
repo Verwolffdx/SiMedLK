@@ -205,7 +205,8 @@
         <LinearLayout
             android:id="@+id/grid"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
             <GridLayout
                 android:id="@+id/times"
                 android:layout_width="25dp"

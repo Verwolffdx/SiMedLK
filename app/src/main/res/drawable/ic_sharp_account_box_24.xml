@@ -1,5 +1,25 @@
-<vector android:height="24dp" android:tint="#0664FF"
-    android:viewportHeight="24" android:viewportWidth="24"
-    android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@android:color/white" android:pathData="M3,21h18L21,3L3,3v18zM15,9c0,1.66 -1.34,3 -3,3s-3,-1.34 -3,-3 1.34,-3 3,-3 3,1.34 3,3zM6,17c0,-2 4,-3.1 6,-3.1s6,1.1 6,3.1v1L6,18v-1z"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#ffffff">
+            </solid>
+            <stroke
+                android:width="1px"
+                android:color="#aaaaaa">
+            </stroke>
+        </shape>
+    </item>
+    <item>
+        <vector xmlns:android="http://schemas.android.com/apk/res/android"
+            android:width="24dp"
+            android:height="24dp"
+            android:tint="#0664FF"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <path
+                android:fillColor="@android:color/white"
+                android:pathData="M3,21h18L21,3L3,3v18zM15,9c0,1.66 -1.34,3 -3,3s-3,-1.34 -3,-3 1.34,-3 3,-3 3,1.34 3,3zM6,17c0,-2 4,-3.1 6,-3.1s6,1.1 6,3.1v1L6,18v-1z" />
+        </vector>
+    </item>
+</layer-list>
