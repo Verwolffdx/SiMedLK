@@ -22,6 +22,7 @@ import com.datwhite.simedlk.App;
 import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
+import com.datwhite.simedlk.entity.Patient;
 import com.datwhite.simedlk.entity.auth.WorkerData;
 import com.datwhite.simedlk.entity.schedule.Cell;
 import com.datwhite.simedlk.entity.schedule.Schedule;
@@ -31,14 +32,23 @@ import com.datwhite.simedlk.ui.colleagues.ColleaguesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class ScheduleFragment extends Fragment {
 
     private ScheduleViewModel scheduleViewModel;
+
+    CompositeDisposable disposable = new CompositeDisposable();
 
     private App app;
     private WorkerCellsResponse workerCellsResponse;
@@ -47,6 +57,8 @@ public class ScheduleFragment extends Fragment {
     private MainActivity mainActivity;
 
     private NavController navController;
+
+    private TextView schedule_name;
 
     private LayoutInflater inf;
 
@@ -63,6 +75,7 @@ public class ScheduleFragment extends Fragment {
         app = (App) getActivity().getApplication();
         inf = inflater;
         recyclerView = root.findViewById(R.id.recycler_schedule);
+
 //        final TextView textView = root.findViewById(R.id.text_home);
 
         navController = (NavController) app.getNavController();
@@ -79,9 +92,6 @@ public class ScheduleFragment extends Fragment {
         });
 
 
-
-
-
         if (app.getAuthResponse().getWorkerData() != null) {
 
             workerCellsResponse = app.getWorkerCellsResponse();
@@ -90,10 +100,12 @@ public class ScheduleFragment extends Fragment {
             for (WorkerData w : app.getAuthResponse().getWorkerData()) {
                 String[] workerDate = w.getREC_TIME().split("-|T|:");
                 String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
-                if (date.equals(String.valueOf(DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now())))) {
-                    todayPatients.add(w);
-                }
+
+
+                todayPatients.add(w);
             }
+
+
 
 //            scheduleList = app.getWorkerCellsResponse().getWorkers().get(0).getSchedule().get(0).getCells();
 //            List<Cell> schedule = new ArrayList<>();

@@ -74,7 +74,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             schedule_time_start = (TextView) itemView.findViewById(R.id.schedule_time_start);
             schedule_doc = (TextView) itemView.findViewById(R.id.schedule_doc);
             schedule_duration = (TextView) itemView.findViewById(R.id.schedule_duration);
-
         }
     }
 }
