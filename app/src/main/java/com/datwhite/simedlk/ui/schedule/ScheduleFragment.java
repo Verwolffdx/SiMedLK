@@ -23,6 +23,7 @@ import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.Patient;
+import com.datwhite.simedlk.entity.PatientSchedule;
 import com.datwhite.simedlk.entity.auth.WorkerData;
 import com.datwhite.simedlk.entity.schedule.Cell;
 import com.datwhite.simedlk.entity.schedule.Schedule;
@@ -114,8 +115,25 @@ public class ScheduleFragment extends Fragment {
 //                    schedule.add(c);
 //            }
             ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, todayPatients);
+/*
+            List<PatientSchedule> patientScheduleList = new ArrayList<>();
+            patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
+            patientScheduleList.add(new PatientSchedule("8:20", "Иванов И. И."));
+            ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
+*/
             recyclerView.setAdapter(adapter);
         } else {
+
+            /*
+            List<PatientSchedule> patientScheduleList = new ArrayList<>();
+            patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
+            patientScheduleList.add(new PatientSchedule("8:20", "Белов А. С."));
+            System.out.println(patientScheduleList.get(0).getName() + " " + patientScheduleList.get(0).getTime_start());
+            ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
+            recyclerView.setAdapter(adapter);
+             */
+
+
             CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
             TextView textView = new TextView(getContext());
             textView.setLayoutParams(new CoordinatorLayout.LayoutParams
