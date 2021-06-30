@@ -6,7 +6,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datwhite.simedlk.App;
 import com.datwhite.simedlk.MainActivity;
 import com.datwhite.simedlk.R;
+import com.datwhite.simedlk.entity.ActivityEntity;
 import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.Patient;
 import com.datwhite.simedlk.entity.PatientSchedule;
@@ -32,6 +36,11 @@ import com.datwhite.simedlk.entity.schedule.WorkerCellsResponse;
 import com.datwhite.simedlk.ui.colleagues.ColleaguesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,6 +48,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -62,6 +72,11 @@ public class ScheduleFragment extends Fragment {
 
     private NavController navController;
 
+    private Spinner scheduleSpinner;
+    private int branch = 0;
+
+    private ScheduleAdapter adapter;
+
     private TextView schedule_name;
 
     private LayoutInflater inf;
@@ -69,6 +84,7 @@ public class ScheduleFragment extends Fragment {
     private List<Cell> scheduleList;
 
     private List<WorkerData> todayPatients = new ArrayList<>();
+    private List<WorkerData> branchPatients = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -79,6 +95,25 @@ public class ScheduleFragment extends Fragment {
         app = (App) getActivity().getApplication();
         inf = inflater;
         recyclerView = root.findViewById(R.id.recycler_schedule);
+        scheduleSpinner = root.findViewById(R.id.scheduleSpinner);
+
+        String[] brList = new String[app.getBranchList().size()];
+        for (Map.Entry<String, String> entry : app.getBranchList().entrySet()) {
+            brList[Integer.parseInt(entry.getKey()) - 1] = entry.getValue();
+        }
+//
+//        String[] brList = new String[app.getBranchList().size()];
+//        brList[0] = "Основная поликлиника";
+        // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_spinner_item, brList);
+        // Определяем разметку для использования при выборе элемента
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Применяем адаптер к элементу spinner
+        scheduleSpinner.setAdapter(arrayAdapter);
+
+
+
+
 
 //        final TextView textView = root.findViewById(R.id.text_home);
 
@@ -107,10 +142,50 @@ public class ScheduleFragment extends Fragment {
                     "Белов А. С."
 
             );
+            WorkerData w2 = new WorkerData(
+                    "1",
+                    "2021-06-30T11:00:00",
+                    "20",
+                    "Терапевт",
+                    "0120190000000023",
+                    "Руч И. В."
+
+            );
+            WorkerData w3 = new WorkerData(
+                    "1",
+                    "2021-06-30T11:40:00",
+                    "20",
+                    "Терапевт",
+                    "0120190000000023",
+                    "Заев П. П."
+
+            );
+            WorkerData w4 = new WorkerData(
+                    "2",
+                    "2021-06-30T08:00:00",
+                    "20",
+                    "Терапевт",
+                    "0120190000000023",
+                    "Купцов М. А."
+
+            );
+            WorkerData w5 = new WorkerData(
+                    "2",
+                    "2021-06-30T08:20:00",
+                    "20",
+                    "Терапевт",
+                    "0120190000000023",
+                    "Попов А. С."
+
+            );
 
             todayPatients.add(w1);
+            todayPatients.add(w2);
+            todayPatients.add(w3);
+            todayPatients.add(w4);
+            todayPatients.add(w5);
 
-            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, todayPatients);
+            adapter = new ScheduleAdapter(createAdapter(), inf, branchPatients, branch);
 
             recyclerView.setAdapter(adapter);
         }
@@ -157,7 +232,7 @@ public class ScheduleFragment extends Fragment {
 //                if (!c.isFree())
 //                    schedule.add(c);
 //            }
-            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, todayPatients);
+            adapter = new ScheduleAdapter(createAdapter(), inf, branchPatients, branch);
 /*
             List<PatientSchedule> patientScheduleList = new ArrayList<>();
             patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
@@ -190,6 +265,41 @@ public class ScheduleFragment extends Fragment {
 //            textView.setPadding(24, 24, 24, 24);
 //            schedule_main.addView(textView);
 //        }
+
+
+        //Обработка выбора мед организации из списка
+        AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Получаем выбранный объект
+                String item = (String) parent.getItemAtPosition(position);
+                branchPatients.clear();
+                for (Map.Entry<String, String> entry : app.getBranchList().entrySet()) {
+                    if (item.equals(entry.getValue())) {
+                        branch = Integer.parseInt(entry.getKey()) - 1;
+
+                        for (WorkerData w : todayPatients) {
+                            if (branch == (Integer.parseInt(w.getBRA_ID()) - 1)) {
+                                branchPatients.add(w);
+
+                            }
+                        }
+
+                        adapter.setWorkerDataList(branchPatients);
+                        recyclerView.setAdapter(adapter);
+
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        };
+        scheduleSpinner.setOnItemSelectedListener(itemSelectedListener);
 
 
 

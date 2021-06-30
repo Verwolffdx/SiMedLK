@@ -22,12 +22,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     private final OnScheduleClickListener onClickListener;
 
     private final LayoutInflater inflater;
-    private final List<WorkerData> workerDataList;
+    private List<WorkerData> workerDataList;
+    private int branch;
 
-    public ScheduleAdapter(OnScheduleClickListener onClickListener, LayoutInflater inflater, List<WorkerData> workerDataList) {
+    public void setWorkerDataList(List<WorkerData> workerDataList) {
+        this.workerDataList = workerDataList;
+    }
+
+    public ScheduleAdapter(OnScheduleClickListener onClickListener, LayoutInflater inflater, List<WorkerData> workerDataList, int branch) {
         this.onClickListener = onClickListener;
         this.inflater = inflater;
         this.workerDataList = workerDataList;
+        this.branch = branch;
     }
 
     @NonNull

@@ -101,6 +101,7 @@ public class ActivityFragment extends Fragment {
                         myRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                activityEntityList.clear();
                                 snapshot.getChildrenCount();
 //                ActivityEntity activityEntity = new ActivityEntity();
                                 int br;
@@ -112,7 +113,7 @@ public class ActivityFragment extends Fragment {
                                         System.out.println("branch " + branch);
 
                                         if (br == branch) {
-                                            activityEntityList.clear();
+
                                             for (DataSnapshot postSnapshotOInner : postSnapshotOInner1.getChildren()) {
                                                 WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
 //                        Log.e("Get Data", workerData.getDOCT_NAME());
