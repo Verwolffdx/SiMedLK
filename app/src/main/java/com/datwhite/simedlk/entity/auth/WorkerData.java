@@ -13,11 +13,12 @@ public class WorkerData {
     private String DOCT_NAME;
     private String CARD_NUMBER;
 
+    private String PATIENT_NAME;
+
     public WorkerData() {
     }
 
     public WorkerData(String BRA_ID, String REC_TIME, String REC_DURATION, String DOCT_NAME, String CARD_NUMBER) {
-
         this.BRA_ID = BRA_ID;
         this.REC_TIME = REC_TIME;
         this.REC_DURATION = REC_DURATION;
@@ -25,6 +26,14 @@ public class WorkerData {
         this.CARD_NUMBER = CARD_NUMBER;
     }
 
+    public WorkerData(String BRA_ID, String REC_TIME, String REC_DURATION, String DOCT_NAME, String CARD_NUMBER, String PATIENT_NAME) {
+        this.BRA_ID = BRA_ID;
+        this.REC_TIME = REC_TIME;
+        this.REC_DURATION = REC_DURATION;
+        this.DOCT_NAME = DOCT_NAME;
+        this.CARD_NUMBER = CARD_NUMBER;
+        this.PATIENT_NAME = PATIENT_NAME;
+    }
 
     public String getBRA_ID() {
         return BRA_ID;
@@ -64,6 +73,14 @@ public class WorkerData {
 
     public void setCARD_NUMBER(String CARD_NUMBER) {
         this.CARD_NUMBER = CARD_NUMBER;
+    }
+
+    public String getPATIENT_NAME() {
+        return PATIENT_NAME;
+    }
+
+    public void setPATIENT_NAME(String PATIENT_NAME) {
+        this.PATIENT_NAME = PATIENT_NAME;
     }
 
     @Exclude

@@ -171,11 +171,13 @@ public class MainActivity extends AppCompatActivity {
 //                snapshot.getChildrenCount();
                 List<String> patientsTime = new ArrayList<>();
                 for (DataSnapshot postSnapshotOut : snapshot.getChildren()) {
-                    for (DataSnapshot postSnapshotOInner : postSnapshotOut.getChildren()) {
-                        WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
-                        patientsTime.add(workerData.getREC_TIME());
+                    for (DataSnapshot postSnapshotOInner1 : postSnapshotOut.getChildren()) {
+                        for (DataSnapshot postSnapshotOInner : postSnapshotOInner1.getChildren()) {
+                            WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
+                            patientsTime.add(workerData.getREC_TIME());
 //                        System.out.println("workerData " + workerData.getREC_TIME());
 //                        System.out.println("postSnapshotOInner " + postSnapshotOut.getChildrenCount());
+                        }
                     }
                 }
 

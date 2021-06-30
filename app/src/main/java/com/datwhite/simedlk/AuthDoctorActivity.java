@@ -19,6 +19,7 @@ import com.datwhite.simedlk.entity.Doctor;
 import com.datwhite.simedlk.entity.MedOrg;
 import com.datwhite.simedlk.entity.auth.AuthBody;
 import com.datwhite.simedlk.entity.auth.AuthResponse;
+import com.datwhite.simedlk.entity.auth.BranchList;
 import com.datwhite.simedlk.entity.auth.WorkerData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -128,8 +129,18 @@ public class AuthDoctorActivity extends AppCompatActivity {
                                             Toast.makeText(AuthDoctorActivity.this, "Неверный пароль", Toast.LENGTH_SHORT).show();
                                         } else {
                                             app.setAuthResponse(authResponse);
+
+                                            Map<String, String> branch = new HashMap<>();
+                                            for(BranchList b : authResponse.getBranchList()) {
+                                                branch.put(b.getBRA_ID(), b.getBRA_NAME());
+                                            }
+                                            app.setBranchList(branch);
+
                                             todayPatients.clear();
                                             if (authResponse.getWorkerData() != null) {
+
+
+
                                                 for (WorkerData w : authResponse.getWorkerData()) {
                                                     String[] workerDate = w.getREC_TIME().split("-|T|:");
                                                     String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
@@ -172,7 +183,8 @@ public class AuthDoctorActivity extends AppCompatActivity {
 //                                                                newPatients.add(authResponse.getWorkerData().get(i));
 //
 //                                                            }
-                                                            myRef.setValue(todayPatients);
+
+//                                                            myRef.setValue(todayPatients);
                                                             COUNT++;
                                                         }
 

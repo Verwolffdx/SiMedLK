@@ -60,8 +60,8 @@ public class AddPatient extends Fragment {
         patientSurname = root.findViewById(R.id.patientSurname);
         patientPatronymic = root.findViewById(R.id.patientPatronymic);
         patientDate = root.findViewById(R.id.patientDate);
-        spinner = root.findViewById(R.id.patientTime);
-        addPatientBtn = root.findViewById(R.id.addPatientBtn);
+//        spinner = root.findViewById(R.id.patientTime);
+//        addPatientBtn = root.findViewById(R.id.addPatientBtn);
 
         app = (App) getActivity().getApplication();
 
@@ -88,12 +88,12 @@ public class AddPatient extends Fragment {
             }
         });
 
-        addPatientBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+//        addPatientBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().onBackPressed();
+//            }
+//        });
 
         return root;
     }

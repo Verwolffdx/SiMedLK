@@ -28,6 +28,7 @@ public class App extends Application {
     private WorkerCellsResponse workerCellsResponse;
     private AuthResponse authResponse;
     private List<String> patientsTime = new ArrayList<>();
+    private Map<String, String> branchList;
 
     private NavController navController;
 
@@ -117,5 +118,13 @@ public class App extends Application {
 
     public HerokuService getHerokuService() {
         return herokuService;
+    }
+
+    public Map<String, String> getBranchList() {
+        return branchList;
+    }
+
+    public void setBranchList(Map<String, String> branchList) {
+        this.branchList = branchList;
     }
 }

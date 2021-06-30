@@ -44,7 +44,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 //        String s = formatter.parse(workerData.getREC_TIME());
         String startTime = workerData.getREC_TIME().split("T|:")[1] + ":" + workerData.getREC_TIME().split("T|:")[2];
         holder.schedule_time_start.setText(startTime);
-        holder.schedule_doc.setText(workerData.getDOCT_NAME());
+        holder.schedule_doc.setText(workerData.getPATIENT_NAME());
         holder.schedule_duration.setText(workerData.getREC_DURATION() + " мин");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

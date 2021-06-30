@@ -20,10 +20,12 @@ import java.util.List;
 public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHolder> {
     private final LayoutInflater inflater;
     private final List<ActivityEntity> activityEntityList;
+    private int branch;
 
-    public ActivityAdapter(LayoutInflater inflater, List<ActivityEntity> activityEntityList) {
+    public ActivityAdapter(LayoutInflater inflater, List<ActivityEntity> activityEntityList, int branch) {
         this.inflater = inflater;
         this.activityEntityList = activityEntityList;
+        this.branch = branch;
     }
 
     @NonNull

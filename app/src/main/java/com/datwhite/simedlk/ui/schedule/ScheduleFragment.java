@@ -44,6 +44,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScheduleFragment extends Fragment {
 
@@ -92,19 +95,59 @@ public class ScheduleFragment extends Fragment {
             }
         });
 
+        if (app.getAuthResponse().getWorkerData() == null) {
+            todayPatients.clear();
+
+            WorkerData w1 = new WorkerData(
+                    "1",
+                    "2021-06-30T10:00:00",
+                    "20",
+                    "Терапевт",
+                    "0120190000000023",
+                    "Белов А. С."
+
+            );
+
+            todayPatients.add(w1);
+
+            ScheduleAdapter adapter = new ScheduleAdapter(createAdapter(), inf, todayPatients);
+
+            recyclerView.setAdapter(adapter);
+        }
+
 
         if (app.getAuthResponse().getWorkerData() != null) {
 
             workerCellsResponse = app.getWorkerCellsResponse();
             todayPatients.clear();
 
+
+
             for (WorkerData w : app.getAuthResponse().getWorkerData()) {
                 String[] workerDate = w.getREC_TIME().split("-|T|:");
                 String date = workerDate[0] + "-" + workerDate[1] + "-" + workerDate[2];
 
 
+                app.getHerokuService().getApi().getPatientCall(new Patient(w.getCARD_NUMBER())).enqueue(new Callback<Patient>() {
+                    @Override
+                    public void onResponse(Call<Patient> call, Response<Patient> response) {
+                        Patient patient = response.body();
+                        w.setPATIENT_NAME(patient.getPatient_name());
+                        //System.out.println(workerCellsResponse.getWorkers().get(0).getSchedule().size());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Patient> call, Throwable t) {
+
+                    }
+                });
+
+
+
+
                 todayPatients.add(w);
             }
+
 
 
 
@@ -122,30 +165,31 @@ public class ScheduleFragment extends Fragment {
             ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
 */
             recyclerView.setAdapter(adapter);
-        } else {
-
-            /*
-            List<PatientSchedule> patientScheduleList = new ArrayList<>();
-            patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
-            patientScheduleList.add(new PatientSchedule("8:20", "Белов А. С."));
-            System.out.println(patientScheduleList.get(0).getName() + " " + patientScheduleList.get(0).getTime_start());
-            ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
-            recyclerView.setAdapter(adapter);
-             */
-
-
-            CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
-            TextView textView = new TextView(getContext());
-            textView.setLayoutParams(new CoordinatorLayout.LayoutParams
-                    (CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
-//            textView.setWidth(CoordinatorLayout.LayoutParams.MATCH_PARENT);
-//            textView.setHeight(CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-            textView.setText("Сегодня записей нет");
-            textView.setTextSize(24);
-            textView.setGravity(Gravity.CENTER);
-            textView.setPadding(24, 24, 24, 24);
-            schedule_main.addView(textView);
         }
+
+//        else {
+//
+//            /*
+//            List<PatientSchedule> patientScheduleList = new ArrayList<>();
+//            patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
+//            patientScheduleList.add(new PatientSchedule("8:20", "Белов А. С."));
+//            System.out.println(patientScheduleList.get(0).getName() + " " + patientScheduleList.get(0).getTime_start());
+//            ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
+//            recyclerView.setAdapter(adapter);
+//             */
+//
+//
+//            CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
+//            TextView textView = new TextView(getContext());
+//            textView.setLayoutParams(new CoordinatorLayout.LayoutParams
+//                    (CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+//
+//            textView.setText("Сегодня записей нет");
+//            textView.setTextSize(24);
+//            textView.setGravity(Gravity.CENTER);
+//            textView.setPadding(24, 24, 24, 24);
+//            schedule_main.addView(textView);
+//        }
 
 
 
