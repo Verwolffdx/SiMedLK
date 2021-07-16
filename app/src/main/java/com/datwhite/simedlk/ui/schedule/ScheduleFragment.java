@@ -130,9 +130,9 @@ public class ScheduleFragment extends Fragment {
             }
         });
 
-        if (app.getAuthResponse().getWorkerData() == null) {
-            todayPatients.clear();
-
+ //       if (app.getAuthResponse().getWorkerData() == null) {
+   //         todayPatients.clear();
+/*
             WorkerData w1 = new WorkerData(
                     "1",
                     "2021-06-30T10:00:00",
@@ -184,11 +184,11 @@ public class ScheduleFragment extends Fragment {
             todayPatients.add(w3);
             todayPatients.add(w4);
             todayPatients.add(w5);
-
-            adapter = new ScheduleAdapter(createAdapter(), inf, branchPatients, branch);
-
-            recyclerView.setAdapter(adapter);
-        }
+*/
+//            adapter = new ScheduleAdapter(createAdapter(), inf, branchPatients, branch);
+//
+//            recyclerView.setAdapter(adapter);
+//        }
 
 
         if (app.getAuthResponse().getWorkerData() != null) {
@@ -242,29 +242,29 @@ public class ScheduleFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
 
-//        else {
-//
-//            /*
-//            List<PatientSchedule> patientScheduleList = new ArrayList<>();
-//            patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
-//            patientScheduleList.add(new PatientSchedule("8:20", "Белов А. С."));
-//            System.out.println(patientScheduleList.get(0).getName() + " " + patientScheduleList.get(0).getTime_start());
-//            ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
-//            recyclerView.setAdapter(adapter);
-//             */
-//
-//
-//            CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
-//            TextView textView = new TextView(getContext());
-//            textView.setLayoutParams(new CoordinatorLayout.LayoutParams
-//                    (CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
-//
-//            textView.setText("Сегодня записей нет");
-//            textView.setTextSize(24);
-//            textView.setGravity(Gravity.CENTER);
-//            textView.setPadding(24, 24, 24, 24);
-//            schedule_main.addView(textView);
-//        }
+        else {
+
+            /*
+            List<PatientSchedule> patientScheduleList = new ArrayList<>();
+            patientScheduleList.add(new PatientSchedule("8:00", "Иванов И. И."));
+            patientScheduleList.add(new PatientSchedule("8:20", "Белов А. С."));
+            System.out.println(patientScheduleList.get(0).getName() + " " + patientScheduleList.get(0).getTime_start());
+            ScheduleAdapter2 adapter = new ScheduleAdapter2(inf, patientScheduleList);
+            recyclerView.setAdapter(adapter);
+             */
+
+
+            CoordinatorLayout schedule_main = root.findViewById(R.id.schedule_main);
+            TextView textView = new TextView(getContext());
+            textView.setLayoutParams(new CoordinatorLayout.LayoutParams
+                    (CoordinatorLayout.LayoutParams.MATCH_PARENT, CoordinatorLayout.LayoutParams.MATCH_PARENT));
+
+            textView.setText("Сегодня записей нет");
+            textView.setTextSize(24);
+            textView.setGravity(Gravity.CENTER);
+            textView.setPadding(24, 24, 24, 24);
+            schedule_main.addView(textView);
+        }
 
 
         //Обработка выбора мед организации из списка
@@ -278,16 +278,17 @@ public class ScheduleFragment extends Fragment {
                 for (Map.Entry<String, String> entry : app.getBranchList().entrySet()) {
                     if (item.equals(entry.getValue())) {
                         branch = Integer.parseInt(entry.getKey()) - 1;
+                        if (todayPatients.size() > 0) {
+                            for (WorkerData w : todayPatients) {
+                                if (branch == (Integer.parseInt(w.getBRA_ID()) - 1)) {
+                                    branchPatients.add(w);
 
-                        for (WorkerData w : todayPatients) {
-                            if (branch == (Integer.parseInt(w.getBRA_ID()) - 1)) {
-                                branchPatients.add(w);
-
+                                }
                             }
-                        }
 
-                        adapter.setWorkerDataList(branchPatients);
-                        recyclerView.setAdapter(adapter);
+                            adapter.setWorkerDataList(branchPatients);
+                            recyclerView.setAdapter(adapter);
+                        }
 
 
                     }

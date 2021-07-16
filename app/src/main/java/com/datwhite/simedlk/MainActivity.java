@@ -127,18 +127,6 @@ public class MainActivity extends AppCompatActivity {
                     navController.navigate(R.id.nav_profile, bundle);
                     drawer.close();
 
-                    //Анимации
-//                    navController.navigate(
-//                            R.id.EditProfileFragment,
-//                            null,
-//                            new NavOptions.Builder()
-//                                    .setEnterAnim(android.R.animator.fade_in)
-//                                    .setExitAnim(android.R.animator.fade_out)
-//                                    .build());
-
-//                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-//                    startActivity(intent);
-//                    onPause();
                 }
             });
 
@@ -175,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                         for (DataSnapshot postSnapshotOInner : postSnapshotOInner1.getChildren()) {
                             WorkerData workerData = postSnapshotOInner.getValue(WorkerData.class);
                             patientsTime.add(workerData.getREC_TIME());
+                            System.out.println("PAT TIME " + workerData.getREC_TIME());
 //                        System.out.println("workerData " + workerData.getREC_TIME());
 //                        System.out.println("postSnapshotOInner " + postSnapshotOut.getChildrenCount());
                         }
